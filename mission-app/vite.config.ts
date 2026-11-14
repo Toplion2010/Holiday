@@ -4,6 +4,8 @@ import { defineConfig } from 'vite'
 
 // https://vite.dev/config/
 export default defineConfig({
+  // Served from a sub-path in production (seymur.top/holiday/): VITE_BASE=/holiday/ npm run build
+  base: process.env.VITE_BASE ?? '/',
   plugins: [react()],
   resolve: {
     // Same alias as Martian Map, so its copied modules keep their imports unchanged.

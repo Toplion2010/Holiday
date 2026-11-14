@@ -59,6 +59,19 @@ The original planner console is at `#/planner`.
 - Config: `@` → `src` alias in `vite.config.ts` / `tsconfig.app.json`; `erasableSyntaxOnly` off (the copied code uses parameter properties).
 - Site packages copied to `public/data/local/` (Gale is the game site; Ares 3 and Jezero are there for the copied tests only and are not listed in `index.json`).
 
+## Deploy (seymur.top/holiday)
+
+The game is the Vercel project `seymur-holiday`, with files under `/holiday/`; seymur.top (project `seymur-top`, repo `Toplion2010/seymur-top`) forwards `/holiday/*` to it with a rewrite in its `vercel.json`.
+
+```
+MSYS_NO_PATHCONV=1 VITE_BASE=/holiday/ npm run build   # MSYS_NO_PATHCONV only in Git Bash
+mkdir -p ../deploy/holiday && cp -r dist/. ../deploy/holiday/
+rm -rf ../deploy/holiday/data/local/ares3 ../deploy/holiday/data/local/jezero   # test-only data
+cd ../deploy && vercel deploy --prod --project seymur-holiday
+```
+
+Keep the `vercel.json` with the `/` → `/holiday/` redirect in the deploy folder.
+
 ## Planner (original ARES Expedition)
 
 

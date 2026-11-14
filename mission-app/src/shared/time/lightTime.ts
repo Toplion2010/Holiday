@@ -1,7 +1,7 @@
 // Время прохождения света Земля–Марс: линейная интерполяция по таблице JPL Horizons,
 // которая лежит в проекте (`/data/ephemeris/earth_mars_light_time.json`).
 
-export const LIGHT_TIME_URL = '/data/ephemeris/earth_mars_light_time.json';
+export const LIGHT_TIME_URL = `${import.meta.env.BASE_URL}data/ephemeris/earth_mars_light_time.json`;
 
 export interface LightTimeEntry {
   utc: string;
