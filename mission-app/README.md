@@ -7,11 +7,11 @@ Mars EVA game on real HiRISE terrain of the Gale crater boxwork area, Mount Shar
 | Route | Screen |
 |---|---|
 | `#/` | ARES//NAV boot checks, any key → home |
-| `#/home` | Home: **Start simulation** (S or 1 → `#/mission`) and **Mission control** (M or 2 → `#/control`) |
+| `#/home` | Home: **Start simulation** (S or 1 → `#/game`) and **Mission control** (M or 2 → `#/control`) |
 | `#/control` | Mission Control: base, crew, site, conditions, today's expeditions (from `src/data/base.json`) |
 | `#/mission` → `#/console` | EVA setup and planning console |
 | `#/credits` | Data sources |
-| `#/game` | Mars EVA game (below) |
+| `#/game` | HAB-1 base screen (3D astronaut and rover, loadout, stops in order) → Mars EVA game (below) |
 | `#/planner` | Original ARES Expedition planner |
 
 ARES//NAV screens and the game use different global stylesheets with the same CSS variable names, so `src/main.tsx` loads one group per page and reloads when you move between groups.
@@ -27,7 +27,7 @@ npm install
 npm run dev
 ```
 
-Title → Loadout → Exit the airlock. Click the scene to capture the mouse.
+Home → Start simulation → HAB-1 base screen: set the loadout, add stops and put them in order (A → B → C), choose the work at each, and check the expedition value against O₂, suit power and time. Exit the airlock, then click the scene to capture the mouse.
 
 | Key | Action |
 |---|---|
@@ -35,10 +35,18 @@ Title → Loadout → Exit the airlock. Click the scene to capture the mouse.
 | Mouse | look |
 | E | work at a science station / enter the habitat to end the EVA |
 | R | patch a suit leak (5 min) |
+| B | autopilot home on / off |
 | V | third-person / helmet view |
 | 1 2 3 | time ×1 ×10 ×60 |
 | H | HUD full / minimal |
 | Esc | release mouse; Esc again returns to the title screen |
+
+In the EVA:
+
+- **Health:** heart rate (follows effort and uphill grade), suit temperature (heaters need suit power, more at night), O₂ and suit battery; rover battery and wheels.
+- **Hazards:** radiation dose (background from `src/data/base.json`, ×30 in a solar particle event), wind and dust, sun elevation and daylight left.
+- **Autopilot home:** retraces the path you walked (every point was already crossed safely). It switches on by itself when O₂ reaches the reserve needed to get home, and for a medical emergency (heart rate above 175 bpm for 2 min, or a random collapse), when the crew member cannot move and the EVA ends after evacuation.
+- **Voice, "Hey Holiday":** click the mic button (Chrome or Edge), then say "Hey Holiday, status / next stop / health / hazards / start science / repair / go home / cancel autopilot". Replies are spoken. The text box takes the same commands.
 
 Goal: reach the orange beacons (five Curiosity stations), do the science, and get back to the blue habitat beacon before oxygen, suit power or the EVA time limit run out. Random events: dust storm (sky optical depth rises), suit leak (oxygen use doubles), comms blackout, rover battery fault. "Go to point" and minimap jumps are charged as walking that distance at 0.7 m/s.
 

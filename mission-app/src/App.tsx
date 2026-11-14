@@ -27,7 +27,7 @@ const go = (h: string) => {
 function Route({ hash }: { hash: string }) {
   if (hash.startsWith('#/console')) return <Console />
   if (hash.startsWith('#/mission')) return <MissionSelect onBegin={() => go('#/console')} />
-  if (hash.startsWith('#/home')) return <Home onStart={() => go('#/mission')} onControl={() => go('#/control')} />
+  if (hash.startsWith('#/home')) return <Home onStart={() => go('#/game')} onControl={() => go('#/control')} />
   if (hash.startsWith('#/control')) return <MissionControl />
   if (hash.startsWith('#/credits')) return <Credits />
   if (hash.startsWith('#/design')) return <DesignBench />

@@ -13,6 +13,9 @@ export class Astronaut {
   /** Metres the root moves in one Walk cycle; used to match stride to ground speed. */
   private strideSpeed = 0.75
   private yaw = 0
+  /** Bind (standing) pose of animated joints, so idle returns to standing, not mid-stride. */
+  private rest: { obj: THREE.Object3D; q: THREE.Quaternion }[] = []
+  private moving = false
   loaded = false
 
   async load(url: string): Promise<boolean> {
@@ -27,6 +30,9 @@ export class Astronaut {
         }
       })
       this.group.add(model)
+      model.traverse((o) => {
+        if (/^(HIP|KNEE|SHOULDER)_/.test(o.name)) this.rest.push({ obj: o, q: o.quaternion.clone() })
+      })
       this.mixer = new THREE.AnimationMixer(model)
       const clip = THREE.AnimationClip.findByName(gltf.animations, 'Walk')
       if (clip) {
@@ -45,8 +51,6 @@ export class Astronaut {
         )
         limbs.resetDuration()
         this.walk = this.mixer.clipAction(limbs)
-        this.walk.play()
-        this.walk.paused = true
       }
       this.loaded = true
       return true
@@ -70,11 +74,23 @@ export class Astronaut {
     this.group.rotation.set(0, this.yaw, 0)
     if (!this.walk || !this.mixer) return
     const moving = speedMs > 0.02
-    this.walk.paused = !moving
-    // Faster than ×3 the legs become a blur; past that the cycle just stays at ×3.
-    this.walk.timeScale = moving ? Math.min(3, speedMs / this.strideSpeed) : 0
-    if (!moving) this.walk.time = 0
-    this.mixer.update(dt)
+    if (moving !== this.moving) {
+      this.moving = moving
+      if (moving) {
+        this.walk.reset()
+        this.walk.play()
+      } else {
+        this.walk.stop()
+      }
+    }
+    if (moving) {
+      // Faster than ×3 the legs become a blur; past that the cycle just stays at ×3.
+      this.walk.timeScale = Math.min(3, speedMs / this.strideSpeed)
+      this.mixer.update(dt)
+    } else {
+      const k = Math.min(1, dt * 8)
+      for (const r of this.rest) r.obj.quaternion.slerp(r.q, k)
+    }
   }
 
   setVisible(on: boolean): void {

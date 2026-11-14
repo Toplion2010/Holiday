@@ -32,11 +32,11 @@ const info = (x: number, z: number, simDt: number, vehicle: 'walk' | 'rover' = '
   vehicle, speedMs: 0.7, locked: true,
 })
 
-const fakeScene = () => ({ setInputEnabled: vi.fn(), setVehicle: vi.fn(), setTau: vi.fn() }) as unknown as WalkScene
+const fakeScene = () => ({ setInputEnabled: vi.fn(), setVehicle: vi.fn(), setTau: vi.fn(), setJoystick: vi.fn(), teleport: vi.fn() }) as unknown as WalkScene
 
 function session() {
   const t = target()
-  const s = new GameSession({ ...DEFAULT_CONFIG }, frame, [t], () => null, () => {})
+  const s = new GameSession({ ...DEFAULT_CONFIG }, frame, [t], [{ id: 'VPB', activity: 'photo' }], () => null, () => {})
   s.attach(fakeScene())
   return { s, t }
 }
@@ -76,6 +76,54 @@ describe('ARES game session', () => {
     s.state.oxygen = 1e-9
     s.beforeRender(info(0, -1, 10))
     expect(s.outcome?.won).toBe(false)
+  })
+
+  it('oxygen at the reserve engages autopilot home along the walked path', () => {
+    const { s } = session()
+    s.beforeRender(info(0, 0, 0))
+    for (let z = -4; z >= -400; z -= 4) s.beforeRender(info(0, z, 1))
+    s.state.oxygen = s.state.config.oxygen * s.state.config.reserve
+    s.beforeRender(info(0, -400, 1))
+    s.beforeRender(info(0, -400, 1))
+    expect(s.state.log.some((l) => l.kind === 'autopilot')).toBe(true)
+    expect(s.inputLocked).toBe(false)
+  })
+
+  it('a heart rate held above the limit triggers a medical evacuation', () => {
+    const { s } = session()
+    s.beforeRender(info(0, 0, 0))
+    s.beforeRender(info(0, -60, 1))
+    s.health.heartRate = 190
+    // Keep effort high so the heart rate stays up for 2 simulated minutes.
+    for (let i = 0; i < 30; i++) {
+      s.health.heartRate = 260
+      s.beforeRender(info(0, -60, 5))
+    }
+    expect(s.inputLocked).toBe(true)
+    expect(s.state.log.some((l) => l.kind === 'medical')).toBe(true)
+  })
+
+  it('voice commands answer status and start the autopilot', () => {
+    const { s } = session()
+    s.beforeRender(info(0, 0, 0))
+    s.beforeRender(info(0, -30, 1))
+    expect(s.voiceCommand('status')).toMatch(/Oxygen \d+ percent/)
+    expect(s.voiceCommand('take me home')).toMatch(/Autopilot engaged/)
+  })
+
+  it('a blocked autopilot never reports arrival early and falls back to the habitat', () => {
+    const { s } = session()
+    const scene = fakeScene()
+    s.attach(scene)
+    s.beforeRender(info(0, 0, 0))
+    s.beforeRender(info(0, -300, 1))
+    s.engageAutopilot('manual')
+    // Stuck on a slope: the position never changes.
+    for (let i = 0; i < 400; i++) s.beforeRender(info(0, -300, 0.1))
+    expect(s.state.log.some((l) => l.text === 'Autopilot arrived at HAB-1')).toBe(false)
+    expect(scene.teleport).toHaveBeenCalledWith(0, 0)
+    s.beforeRender(info(0, 0, 0.1))
+    expect(s.state.log.some((l) => l.text === 'Autopilot arrived at HAB-1')).toBe(true)
   })
 
   it('returning to the habitat with science wins', () => {

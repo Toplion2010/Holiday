@@ -1,147 +1,52 @@
-// ARES Expedition as a game: title → loadout → EVA on the Martian Map walk scene.
+// Mars EVA game: HAB-1 base screen (astronaut, loadout, ordered stops) → EVA on the
+// Martian Map walk scene with autopilot, health, hazards and the "Hey Holiday" voice assistant.
 
 import { useEffect, useMemo, useRef, useState } from 'react'
 import type { ModeContext } from '@/app/modeContract'
 import WalkPanel, { type WalkGameBridge } from '@/features/walk/WalkPanel'
 import { fetchManifest } from '@/features/walk/sitePackage'
-import { makeFrame, type LocalFrame } from '@/features/walk/geo'
+import { lonLatToLocal, makeFrame, type LocalFrame } from '@/features/walk/geo'
 import type { WalkScene } from '@/features/walk/walkScene'
 import { DEFAULT_CONFIG } from '../expedition/model'
-import type { Config } from '../expedition/types'
+import { BaseScreen, type Loadout } from './BaseScreen'
 import { GameSession, loadTargets, type GameTarget, type Snapshot } from './session'
 import { GameHud } from './GameHud'
+import { VoiceAssistant } from './voice'
 import './game.css'
 
 const SITE = 'gale-boxwork'
+const MOVE_KEYS = new Set(['KeyW', 'KeyA', 'KeyS', 'KeyD', 'ArrowUp', 'ArrowDown', 'ArrowLeft', 'ArrowRight'])
 
-export interface Loadout {
-  config: Config
-  vehicle: 'walk' | 'rover'
-  ltst: number
+const DEFAULT_LOADOUT: Loadout = {
+  config: { ...DEFAULT_CONFIG },
+  vehicle: 'walk',
+  ltst: 9,
+  route: [
+    { id: 'VPB', activity: 'survey' },
+    { id: 'NODULE', activity: 'sample' },
+    { id: 'POLYGON', activity: 'photo' },
+  ],
 }
 
-const DEFAULT_LOADOUT: Loadout = { config: { ...DEFAULT_CONFIG }, vehicle: 'walk', ltst: 9 }
+interface Site { frame: LocalFrame; targets: GameTarget[]; start: { x: number; z: number } }
 
 export default function Game() {
-  const [screen, setScreen] = useState<'title' | 'loadout' | 'play'>('title')
+  const [screen, setScreen] = useState<'base' | 'play'>('base')
   const [loadout, setLoadout] = useState<Loadout>(DEFAULT_LOADOUT)
   const [run, setRun] = useState(0)
-
-  if (screen === 'play') {
-    return <Play key={run} loadout={loadout} onExit={() => setScreen('title')} onRestart={() => setRun((n) => n + 1)} />
-  }
-  return (
-    <div className="page game-front">
-      <nav className="topbar">
-        <span className="brand">ARES&nbsp;Expedition</span>
-        <div className="topbar-links">
-          <a href="#/planner">Mission planner</a>
-          <a href="./data/gale/gale-data-manifest.json" target="_blank" rel="noreferrer">Sources</a>
-        </div>
-        <span className="topbar-tag">Space&nbsp;Apps&nbsp;2026</span>
-      </nav>
-      {screen === 'title' ? <Title onStart={() => setScreen('loadout')} /> : <LoadoutScreen value={loadout} onChange={setLoadout} onBack={() => setScreen('title')} onGo={() => setScreen('play')} />}
-    </div>
-  )
-}
-
-function Title({ onStart }: { onStart(): void }) {
-  return (
-    <header className="game-hero">
-      <div className="game-hero-copy">
-        <span className="micro-label">Gale crater · Mount Sharp boxwork · real HiRISE terrain</span>
-        <h1>
-          MARS
-          <br />
-          <span className="hero-thin">EVA</span>
-        </h1>
-        <p>
-          Walk out of the habitat on real Martian terrain, reach the stations Curiosity studied, do the science and get
-          home before your oxygen runs out. Dust storms, suit leaks and comms blackouts will not wait for you.
-        </p>
-        <div className="game-actions">
-          <button type="button" className="game-cta" onClick={onStart}>Start mission →</button>
-          <a className="game-ghost" href="#/planner">Open mission planner</a>
-        </div>
-        <ul className="game-controls">
-          <li><kbd>Click</kbd> capture mouse</li>
-          <li><kbd>W A S D</kbd> walk</li>
-          <li><kbd>E</kbd> science / end EVA at habitat</li>
-          <li><kbd>R</kbd> patch suit leak</li>
-          <li><kbd>V</kbd> third / first person</li>
-          <li><kbd>1 2 3</kbd> time ×1 ×10 ×60</li>
-        </ul>
-      </div>
-      <img className="game-hero-art" src="./game/astronaut-preview.png" alt="Astronaut and rover models" />
-    </header>
-  )
-}
-
-function LoadoutScreen({ value, onChange, onBack, onGo }: { value: Loadout; onChange(l: Loadout): void; onBack(): void; onGo(): void }) {
-  const c = value.config
-  const set = (patch: Partial<Config>) => onChange({ ...value, config: { ...c, ...patch } })
-  return (
-    <section className="game-loadout">
-      <span className="micro-label">Prepare at the habitat</span>
-      <h2>Loadout</h2>
-      <div className="game-grid">
-        <label>Start
-          <select value={value.vehicle} onChange={(e) => onChange({ ...value, vehicle: e.target.value as Loadout['vehicle'], config: { ...c, mode: e.target.value as Config['mode'] } })}>
-            <option value="walk">On foot</option>
-            <option value="rover">In the rover</option>
-          </select>
-        </label>
-        <label>Science objective
-          <select value={c.objective} onChange={(e) => set({ objective: e.target.value })}>
-            <option value="groundwater">Groundwater history</option>
-            <option value="stratigraphy">Layering & stratigraphy</option>
-            <option value="geomorphology">Surface morphology</option>
-          </select>
-        </label>
-        <label>Local solar time at exit
-          <select value={value.ltst} onChange={(e) => onChange({ ...value, ltst: Number(e.target.value) })}>
-            {[7, 9, 12, 15, 17].map((h) => <option key={h} value={h}>{String(h).padStart(2, '0')}:00</option>)}
-          </select>
-        </label>
-        <label>Oxygen, kg
-          <input type="number" min={0.2} max={3} step={0.1} value={c.oxygen} onChange={(e) => set({ oxygen: Number(e.target.value) })} />
-        </label>
-        <label>Suit battery, Wh
-          <input type="number" min={200} max={4000} step={100} value={c.suitWh} onChange={(e) => set({ suitWh: Number(e.target.value) })} />
-        </label>
-        <label>Reserve to keep, %
-          <input type="number" min={5} max={80} step={5} value={Math.round(c.reserve * 100)} onChange={(e) => set({ reserve: Number(e.target.value) / 100 })} />
-        </label>
-        <label>EVA time limit, h
-          <input type="number" min={1} max={24} step={1} value={c.duration / 3600} onChange={(e) => set({ duration: Number(e.target.value) * 3600 })} />
-        </label>
-      </div>
-      <p className="dim small">
-        Consumption model from ARES Expedition (hypothetical equipment): oxygen {c.oxygenRate * 3600 * 1000} g/h at rest, rising with
-        uphill grade; suit {c.suitW} W; rover {c.driveW} W while driving.
-      </p>
-      <div className="game-actions">
-        <button type="button" className="game-ghost" onClick={onBack}>← Back</button>
-        <button type="button" className="game-cta" onClick={onGo}>Exit the airlock →</button>
-      </div>
-    </section>
-  )
-}
-
-function Play({ loadout, onExit, onRestart }: { loadout: Loadout; onExit(): void; onRestart(): void }) {
-  const [ready, setReady] = useState<{ frame: LocalFrame; targets: GameTarget[] } | null>(null)
+  const [site, setSite] = useState<Site | null>(null)
   const [error, setError] = useState('')
-  const [snap, setSnap] = useState<Snapshot | null>(null)
-  const labelsRef = useRef<HTMLDivElement>(null)
 
-  // The walk panel loads the terrain itself; targets only need the same local frame.
   useEffect(() => {
     let alive = true
     fetchManifest(SITE)
       .then(async (m) => {
         const frame = makeFrame(m.bounds_eqc_m, m.height.pixel_m, m.height.width, m.height.height)
         const targets = await loadTargets(frame)
-        if (alive) setReady({ frame, targets })
+        // The walk scene starts at the first POI (camp A); use it for base-screen estimates.
+        const poi = m.pois?.[0]
+        const start = poi ? lonLatToLocal(frame, poi.lon_east, poi.lat) : { x: 0, z: 0 }
+        if (alive) setSite({ frame, targets, start })
       })
       .catch((e: Error) => alive && setError(e.message))
     return () => {
@@ -149,25 +54,65 @@ function Play({ loadout, onExit, onRestart }: { loadout: Loadout; onExit(): void
     }
   }, [])
 
-  const session = useMemo(() => {
-    if (!ready) return null
-    const s = new GameSession(loadout.config, ready.frame, ready.targets, () => labelsRef.current, setSnap)
-    return s
-  }, [ready, loadout])
+  if (error) {
+    return (
+      <div className="game-center">
+        <p>Could not load the site: {error}</p>
+        <a className="walk-btn" href="#/home">Back</a>
+      </div>
+    )
+  }
+  if (screen === 'play' && site) {
+    return <Play key={run} loadout={loadout} site={site} onExit={() => setScreen('base')} onRestart={() => setRun((n) => n + 1)} />
+  }
+  return <BaseScreen value={loadout} onChange={setLoadout} targets={site?.targets ?? null} start={site?.start ?? null} onGo={() => setScreen('play')} />
+}
 
-  useEffect(() => () => session?.dispose(), [session])
+function Play({ loadout, site, onExit, onRestart }: { loadout: Loadout; site: Site; onExit(): void; onRestart(): void }) {
+  const [snap, setSnap] = useState<Snapshot | null>(null)
+  const [voice, setVoice] = useState<{ on: boolean; error?: string; heard?: string; reply?: string | null }>({ on: false })
+  const labelsRef = useRef<HTMLDivElement>(null)
+  const hudCompacted = useRef(false)
+
+  const session = useMemo(
+    () => new GameSession(loadout.config, site.frame, site.targets, loadout.route, () => labelsRef.current, setSnap),
+    [loadout, site],
+  )
+  const assistant = useMemo(
+    () =>
+      new VoiceAssistant(
+        (text) => session.voiceCommand(text),
+        (heard, reply) => setVoice((v) => ({ ...v, heard, reply })),
+        (on, error) => setVoice((v) => ({ ...v, on, error })),
+      ),
+    [session],
+  )
 
   useEffect(() => {
-    if (!session) return
+    session.speak = (t) => assistant.speak(t)
+    return () => {
+      session.dispose()
+      assistant.dispose()
+    }
+  }, [session, assistant])
+
+  useEffect(() => {
+    // Capture phase on window runs before the walk scene's own key handler, so movement
+    // keys can be blocked while the crew member is incapacitated.
     const onKey = (e: KeyboardEvent) => {
       const t = e.target as HTMLElement | null
-      if (t && (t.tagName === 'INPUT' || t.tagName === 'SELECT')) return
+      if (t && (t.tagName === 'INPUT' || t.tagName === 'SELECT' || t.tagName === 'TEXTAREA')) return
+      if (session.inputLocked && MOVE_KEYS.has(e.code)) {
+        e.stopImmediatePropagation()
+        return
+      }
       if (e.code === 'KeyE') session.interact()
       else if (e.code === 'KeyR') session.startRepair()
       else if (e.code === 'KeyV') session.toggleView()
+      else if (e.code === 'KeyB') session.toggleAutopilot()
     }
-    window.addEventListener('keydown', onKey)
-    return () => window.removeEventListener('keydown', onKey)
+    window.addEventListener('keydown', onKey, { capture: true })
+    return () => window.removeEventListener('keydown', onKey, { capture: true })
   }, [session])
 
   const ctx: ModeContext = useMemo(
@@ -181,10 +126,31 @@ function Play({ loadout, onExit, onRestart }: { loadout: Loadout; onExit(): void
     [onExit],
   )
 
-  const bridge: WalkGameBridge | undefined = useMemo(() => {
-    if (!session) return undefined
-    return {
+  const bridge: WalkGameBridge = useMemo(
+    () => ({
       hooks: { beforeRender: session.beforeRender, afterRender: session.afterRender },
+      onState: (state, extra) => {
+        session.onWalkState(state, extra)
+        // Start the Martian Map HUD in its compact level ("минимум") to leave room for game panels:
+        // press its own toggle button until it reads that level. Runs once per session.
+        if (!hudCompacted.current) {
+          hudCompacted.current = true
+          let tries = 0
+          let clickedAt: string | null = null
+          const tick = () => {
+            const btn = labelsRef.current?.parentElement?.querySelector<HTMLButtonElement>('.hud-toggle')
+            const text = btn?.textContent ?? null
+            if (text?.includes('минимум') || tries++ > 40) return
+            // Click only once the label shows a new level, so a slow render cannot skip past "min".
+            if (btn && text !== clickedAt) {
+              clickedAt = text
+              btn.click()
+            }
+            setTimeout(tick, 250)
+          }
+          setTimeout(tick, 250)
+        }
+      },
       onScene: (scene: WalkScene | null) => {
         session.attach(scene)
         // Dev-only handle for testing from the console (stripped from production builds).
@@ -193,18 +159,9 @@ function Play({ loadout, onExit, onRestart }: { loadout: Loadout; onExit(): void
         scene.setVehicle(loadout.vehicle)
         scene.setLtst(loadout.ltst)
       },
-    }
-  }, [session, loadout])
-
-  if (error) {
-    return (
-      <div className="game-center">
-        <p>Could not load the site: {error}</p>
-        <button type="button" className="walk-btn" onClick={onExit}>Back</button>
-      </div>
-    )
-  }
-  if (!bridge || !session) return <div className="game-center"><p>Loading HiRISE terrain…</p></div>
+    }),
+    [session, loadout],
+  )
 
   return (
     <WalkPanel
@@ -214,7 +171,17 @@ function Play({ loadout, onExit, onRestart }: { loadout: Loadout; onExit(): void
         overlay: (
           <>
             <div ref={labelsRef} className="game-labels" />
-            {snap && <GameHud snap={snap} session={session} onExit={onExit} onRestart={onRestart} />}
+            {snap && (
+              <GameHud
+                snap={snap}
+                session={session}
+                voice={voice}
+                onVoiceToggle={() => assistant.toggle()}
+                onVoiceText={(t) => assistant.handleText(t)}
+                onExit={onExit}
+                onRestart={onRestart}
+              />
+            )}
           </>
         ),
       }}
