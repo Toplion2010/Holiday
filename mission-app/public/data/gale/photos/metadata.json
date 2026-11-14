@@ -1,0 +1,16 @@
+{
+  "id": "PIA26697",
+  "title": "Curiosity Studies Nodules on Boxwork Formations",
+  "file": "photos/PIA26697.jpg",
+  "source_url": "https://assets.science.nasa.gov/content/dam/science/psd/photojournal/pia/pia26/pia26697/PIA26697.jpg",
+  "evidence_url": "https://science.nasa.gov/photojournal/curiosity-studies-nodules-on-boxwork-formations/",
+  "mission": "MSL Curiosity",
+  "instrument": "MAHLI",
+  "acquisition_date": "2025-08-21",
+  "sol": 4636,
+  "published": "2026-02-23",
+  "credit": "NASA/JPL-Caltech/MSSS",
+  "processing": "NASA mosaic of 50 images; 10 focus settings at each of five locations; local file unchanged",
+  "sha256": "a5be491a63d6815cc0759e3782dd2a835d7e7b302e6527940bbdde8a1f7bff01",
+  "location_role": "Context image associated with rover station NODULE; exact imaged feature offset from camera is not verified; do not treat image center as a mapped point."
+}

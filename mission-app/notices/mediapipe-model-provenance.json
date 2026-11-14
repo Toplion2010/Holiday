@@ -1,0 +1,29 @@
+{
+  "source_url": "https://storage.googleapis.com/mediapipe-models/gesture_recognizer/gesture_recognizer/float16/1/gesture_recognizer.task",
+  "download_url": "https://storage.googleapis.com/mediapipe-models/gesture_recognizer/gesture_recognizer/float16/latest/gesture_recognizer.task",
+  "sha256": "97952348cf6a6a4915c2ea1496b4b37ebabc50cbbf80571435643c455f2b0482",
+  "md5": "4dbf485c473207651100a1895343f35a",
+  "source_headers": {
+    "X-GUploader-UploadID": "AFy3sg1FHOjB2CGRXtqvrJq1ydl5TeT-zzIYUHyjrsJ39QWSUFNGCHo_iJO6fjTWhCaXRYdKxkYJp6I",
+    "x-goog-generation": "1682480002665893",
+    "x-goog-metageneration": "1",
+    "x-goog-stored-content-encoding": "identity",
+    "x-goog-stored-content-length": "8373440",
+    "x-goog-hash": "crc32c=Ploz0Q==",
+    "x-goog-storage-class": "STANDARD",
+    "Accept-Ranges": "bytes",
+    "Content-Length": "8373440",
+    "Access-Control-Allow-Origin": "*",
+    "Access-Control-Expose-Headers": "Content-Type,Access-Control-Allow-Origin",
+    "Server": "UploadServer",
+    "Date": "Sat, 14 Nov 2026 15:10:45 GMT",
+    "Expires": "Sat, 14 Nov 2026 16:10:45 GMT",
+    "Cache-Control": "public, max-age=3600",
+    "Age": "1285",
+    "Last-Modified": "Wed, 26 Apr 2023 03:33:22 GMT",
+    "ETag": "\"4dbf485c473207651100a1895343f35a\"",
+    "Content-Type": "application/octet-stream",
+    "Alt-Svc": "h3=\":443\"; ma=2592000,h3-29=\":443\"; ma=2592000",
+    "Connection": "close"
+  }
+}

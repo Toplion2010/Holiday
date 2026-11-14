@@ -1,0 +1,28 @@
+import {describe,it,expect} from 'vitest'
+import {prepare,astar,lineCells,timeField,type NavGrid} from '../route/grid'
+import {PROFILE_PARAMS} from '../route/model'
+import {initial,accept,tick,inject} from './engine'
+import {DEFAULT_CONFIG,ACTIVITIES,scienceValue,stateKey} from './model'
+import {planExpedition} from './planning'
+import {reduce,playRecording,type Action} from './actions'
+import type {Target} from './types'
+function grid(w=16,h=16):NavGrid{return{w,h,cellX:2,cellY:2,res:2,left:0,top:h*2,elev:new Float32Array(w*h),slope:new Float32Array(w*h),rough:new Float32Array(w*h),rock:new Float32Array(w*h),hazard:new Uint8Array(w*h),proven:new Uint8Array(w*h)}}
+const station:Target={id:'A',name:'Sample station',xy:[21,11],observedXY:[21,11],purpose:'Compare',source:'https://science.nasa.gov/',uncertainty:100,activities:ACTIVITIES,selected:'survey',required:true,theme:'groundwater',date:'2025',sol:1,locationNote:'station'}
+function setup(){const g=grid();const s=initial({...DEFAULT_CONFIG,base:[3,29]});return{g,s}}
+describe('expedition acceptance',()=>{
+ it('does not cut blocked corners in A*, return fields or smoothing',()=>{const g=grid(2,2);g.hazard[1]=2;g.hazard[2]=2;const p=prepare(g,PROFILE_PARAMS.solo,'fastest');expect(astar(p,0,3)).toBeNull();expect(lineCells(p,0,3)).toBeNull();expect(timeField(p,0,false)[3]).toBe(Infinity)})
+ it('treats missing numerical terrain as blocked',()=>{const g=grid(3,1);g.elev[1]=NaN;expect(astar(prepare(g,PROFILE_PARAMS.solo,'fastest'),0,2)).toBeNull()})
+ it('includes work and return and matches playback resources',()=>{const{g,s}=setup();const p=planExpedition(g,s,[station])[1];expect(p.feasible).toBe(true);expect(p.legs.at(-1)?.to).toBe('base');expect(p.seconds).toBeGreaterThan(p.travelSeconds);const finish=tick({...accept(s,p),running:true},p.seconds+100);expect(finish.status).toBe('Completed');expect(finish.elapsed).toBeCloseTo(p.seconds,5);expect(s.oxygen-finish.oxygen).toBeCloseTo(p.oxygen,5);expect(s.suitWh-finish.suitWh).toBeCloseTo(p.suitWh,5);expect(finish.science).toBe(p.value)})
+ it('pause consumes nothing and playback batches have identical outcome',()=>{const{g,s}=setup(),p=planExpedition(g,s,[station])[1];const start=accept(s,p);expect(tick(start,600)).toBe(start);let chunked={...start,running:true};for(let i=0;i<100;i++)chunked=tick(chunked,10);const full=tick({...start,running:true},1000);expect(chunked.elapsed).toBeCloseTo(full.elapsed,8);expect(chunked.oxygen).toBeCloseTo(full.oxygen,8);expect(chunked.science).toBe(full.science);expect(chunked.position).toEqual(full.position)})
+ it('cannot collect the same science twice',()=>{const{g,s}=setup(),p=planExpedition(g,s,[station])[1];const end=tick({...accept(s,p),running:true},2000);const again=planExpedition(g,end,[station]);expect(again.every(p=>!p.feasible)).toBe(true);expect(end.science).toBe(p.value)})
+ it('shortening work reduces time, oxygen and scientific value',()=>{const{g,s}=setup();const full=planExpedition(g,s,[station])[1],short=planExpedition(g,s,[{...station,selected:'photo'}])[1];expect(short.seconds).toBeLessThan(full.seconds);expect(short.oxygen).toBeLessThan(full.oxygen);expect(short.value).toBeLessThan(full.value)})
+ it('cannot trade rover battery for missing oxygen',()=>{const{g,s}=setup();s.oxygen=0.001;s.roverWh=1e9;expect(planExpedition(g,s,[station]).every(p=>!p.feasible&&p.reasons.some(r=>r.includes('oxygen')))).toBe(true)})
+ it('walking and driving have distinct slope constraints',()=>{const g=grid(3,1);g.slope.fill(18);expect(astar(prepare(g,PROFILE_PARAMS.solo,'fastest'),0,2)).not.toBeNull();expect(astar(prepare(g,PROFILE_PARAMS.rover,'fastest'),0,2)).toBeNull()})
+ it('uphill return is evaluated directionally',()=>{const{g,s}=setup();for(let i=0;i<g.elev.length;i++)g.elev[i]=Math.floor(i/g.w)*0.2;const p=planExpedition(g,s,[station])[1];expect(p.legs[0].seconds).not.toBeCloseTo(p.legs[1].seconds,1)})
+ it('new obstacles invalidate approved routes and are honored on return',()=>{const{g,s}=setup();s.position=[21,11];const changed=inject(s,'obstacle',[21,11]);expect(changed.revision).toBe(1);expect(changed.plan).toBeNull();expect(planExpedition(g,changed,[],true)[0].feasible).toBe(false)})
+ it('rover failure switches to real walking return with remaining suit resources',()=>{const{g,s}=setup();s.config.mode='rover';s.aboard=true;s.position=[21,11];const broken=inject(s,'failure');expect(broken.aboard).toBe(false);const back=planExpedition(g,broken,[],true)[0];expect(back.legs.every(l=>l.mode==='walk')).toBe(true);broken.oxygen=0.0001;expect(planExpedition(g,broken,[],true)[0].feasible).toBe(false)})
+ it('boarding requires rover to be physically present',()=>{const{ s}=setup();s.rover=[100,100];expect(reduce(s,{type:'board'}).aboard).toBe(false)})
+ it('stale plan approval is rejected',()=>{const{g,s}=setup(),p=planExpedition(g,s,[station])[1];s.oxygen-=0.1;expect(accept(s,p).plan).toBeNull()})
+ it('science scoring has relevance, complementarity and diminishing returns',()=>{expect(scienceValue(station,ACTIVITIES[1],'groundwater',{})).toBeGreaterThan(scienceValue(station,ACTIVITIES[1],'stratigraphy',{}));expect(scienceValue(station,ACTIVITIES[1],'groundwater',{groundwater:2})).toBeLessThan(scienceValue(station,ACTIVITIES[1],'groundwater',{}))})
+ it('recording replays exact action and fault timing',()=>{const{g,s}=setup(),p=planExpedition(g,s,[station])[1];const actions:Action[]=[{type:'accept',plan:p},{type:'running',value:true},{type:'tick',seconds:30},{type:'fault',fault:'leak'}];let actual=s;for(const a of actions)actual=reduce(actual,a);const replay=playRecording({version:1,config:s.config,actions,dataVersion:'test'});expect(replay).toEqual(actual);expect(stateKey(replay)).toBe(stateKey(actual))})
+})

@@ -1,0 +1,42 @@
+{
+  "source_url": "https://asc-pds-services.s3.us-west-2.amazonaws.com/mosaic/Mars/MSL/MSL_Gale_DEM_Mosaic_1m_v3.tif",
+  "checked_utc": "2026-11-14",
+  "source_nodata": -32767.0,
+  "source_resolution_m": [
+    1.0,
+    1.0
+  ],
+  "source_transform": [
+    1.0,
+    0.0,
+    8127993.492786024,
+    0.0,
+    -1.0,
+    -244781.075189438,
+    0.0,
+    0.0,
+    1.0
+  ],
+  "source_window": {
+    "col_off": 13724,
+    "row_off": 38593,
+    "width": 2999,
+    "height": 2999
+  },
+  "source_crs": "PROJCS[\"Mars_Equirectangular_clon0\",GEOGCS[\"GCS_Mars_2000_Sphere\",DATUM[\"Mars_2000_(Sphere)\",SPHEROID[\"Mars_2000_Sphere_IAU_IAG\",3396190,0],AUTHORITY[\"ESRI\",\"106971\"]],PRIMEM[\"Reference_Meridian\",0],UNIT[\"degree\",0.0174532925199433,AUTHORITY[\"EPSG\",\"9122\"]]],PROJECTION[\"Equirectangular\"],PARAMETER[\"standard_parallel_1\",0],PARAMETER[\"central_meridian\",0],PARAMETER[\"false_easting\",0],PARAMETER[\"false_northing\",0],UNIT[\"metre\",1,AUTHORITY[\"EPSG\",\"9001\"]],AXIS[\"Easting\",EAST],AXIS[\"Northing\",NORTH]]",
+  "grid_dimensions": [
+    1499,
+    1499
+  ],
+  "valid_cells": 2247001,
+  "invalid_cells": 0,
+  "source_window_nodata_samples": 0,
+  "method": "Original numerical DEM masked read; finite and not nodata; 6 m support halo; all four 1 m samples required per 2 m navigation cell. PixelIsPoint handled by GDAL transform. Validity means observed source support, not traversability or native-resolution assurance.",
+  "elevation_comparison_abs_m": {
+    "mean": 0.0026464712389129524,
+    "max": 0.0057470581250527175,
+    "p99": 0.005541081250157731
+  },
+  "file": "grids/validity.bin",
+  "sha256": "9591b6b224a48c2a66ab7c3fc1c9a89f1be8b8d24085bda8e0fc6c4adfe807f3"
+}

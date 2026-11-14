@@ -1,0 +1,389 @@
+{
+  "schema_version": 1,
+  "verified_on": "2026-11-14",
+  "site": "gale-boxwork",
+  "site_status": "candidate supported by overlapping optical/DEM extents and thermal context; final valid-data mask and per-pixel terrain provenance still required",
+  "site_bounds": {
+    "lonlat": [
+      137.35569868719756,
+      -4.831286993524327,
+      137.40629363116705,
+      -4.78069204955484
+    ],
+    "projected": [
+      8141717.492786024,
+      -286373.075189438,
+      8144716.492786024,
+      -283374.075189438
+    ],
+    "crs": "Mars 2000 sphere, equirectangular, standard parallel 0 (IAU 49910 equivalent); metres = degrees \u00d7 59274.6975"
+  },
+  "products": [
+    {
+      "id": "dem",
+      "title": "USGS Gale merged elevation v3",
+      "source_url": "https://asc-pds-services.s3.us-west-2.amazonaws.com/mosaic/Mars/MSL/MSL_Gale_DEM_Mosaic_1m_v3.tif",
+      "metadata_url": "https://astrogeology.usgs.gov/search/map/mars_msl_gale_merged_dem_1m",
+      "mission_instrument": [
+        "MRO HiRISE",
+        "MRO CTX",
+        "Mars Express HRSC",
+        "MGS MOLA control"
+      ],
+      "classification": "derived_from_observations",
+      "coverage_lonlat": [
+        137.1241749414272,
+        -5.098660774618167,
+        137.68056748964784,
+        -4.129613231568029
+      ],
+      "crs": "Mars_2000_Sphere; equirectangular; center longitude/latitude 0; radius 3396190 m; planetocentric latitude; east longitude",
+      "grid_spacing_m": 1,
+      "native_resolution_m": null,
+      "native_resolution_note": "Merged product includes lower-resolution fillers; native source for each pixel is not established by this grid spacing.",
+      "units": "metres relative to MOLA/areoid control",
+      "observation_date": null,
+      "publication_date": "2016-10-20",
+      "storage_last_modified": "2022-11-09",
+      "nodata": -32767,
+      "nodata_note": "DEM GDAL_NODATA verified from TIFF tag 42113. Orthophoto has no nodata tag in inspected IFD.",
+      "dimensions": [
+        32980,
+        57440
+      ],
+      "raster_type": "PixelIsPoint",
+      "role": "routing",
+      "credit": "Fred J. Calef III and Timothy Parker; NASA/JPL-Caltech, USGS Astrogeology, University of Arizona; ESA/DLR/FU Berlin for HRSC",
+      "terms": "USGS metadata: no use constraints; credit authors",
+      "verification": "HTTP 206 byte ranges and TIFF tags inspected 2026-11-14",
+      "processing": [
+        "Source mosaic geometrically registered to MOLA through HRSC and CTX",
+        "Existing demo clips ~3 km study region",
+        "Existing demo quantizes elevation to uint16 / downscales optical tiles"
+      ],
+      "accuracy_note": "USGS reports approximately 100 m horizontal and approximately 1 m vertical MOLA control accuracy; local relative registration not independently measured."
+    },
+    {
+      "id": "ortho",
+      "title": "USGS Gale merged orthophoto v3",
+      "source_url": "https://asc-pds-services.s3.us-west-2.amazonaws.com/mosaic/Mars/MSL/MSL_Gale_Orthophoto_Mosaic_25cm_v3.tif",
+      "metadata_url": "https://astrogeology.usgs.gov/search/map/mars_msl_gale_merged_orthophoto_mosaic_25cm",
+      "mission_instrument": [
+        "MRO HiRISE",
+        "MRO CTX",
+        "Mars Express HRSC",
+        "MGS MOLA control"
+      ],
+      "classification": "derived_from_observations",
+      "coverage_lonlat": [
+        137.09471898704908,
+        -5.249524890070564,
+        137.85389620566426,
+        -4.068582550002499
+      ],
+      "crs": "Mars_2000_Sphere; equirectangular; center longitude/latitude 0; radius 3396190 m; planetocentric latitude; east longitude",
+      "grid_spacing_m": 0.25,
+      "native_resolution_m": null,
+      "native_resolution_note": "Merged product includes lower-resolution fillers; native source for each pixel is not established by this grid spacing.",
+      "units": "8-bit image brightness, not reflectance",
+      "observation_date": null,
+      "publication_date": "2016-10-20",
+      "storage_last_modified": "2022-11-09",
+      "nodata": null,
+      "nodata_note": "DEM GDAL_NODATA verified from TIFF tag 42113. Orthophoto has no nodata tag in inspected IFD.",
+      "dimensions": [
+        180000,
+        280000
+      ],
+      "raster_type": "PixelIsArea",
+      "role": "visual_context",
+      "credit": "Fred J. Calef III and Timothy Parker; NASA/JPL-Caltech, USGS Astrogeology, University of Arizona; ESA/DLR/FU Berlin for HRSC",
+      "terms": "USGS metadata: no use constraints; credit authors",
+      "verification": "HTTP 206 byte ranges and TIFF tags inspected 2026-11-14",
+      "processing": [
+        "Source mosaic geometrically registered to MOLA through HRSC and CTX",
+        "Existing demo clips ~3 km study region",
+        "Existing demo quantizes elevation to uint16 / downscales optical tiles"
+      ],
+      "accuracy_note": "USGS reports approximately 100 m horizontal and approximately 1 m vertical MOLA control accuracy; local relative registration not independently measured."
+    },
+    {
+      "id": "themis-night",
+      "title": "THEMIS controlled nighttime infrared mosaic v2 October 2018",
+      "source_url": "https://trek.nasa.gov/tiles/Mars/EQ/THEMIS_NightIR_ControlledMosaics_100m_v2_oct2018/1.0.0/WMTSCapabilities.xml",
+      "sample_tile_url": "https://trek.nasa.gov/tiles/Mars/EQ/THEMIS_NightIR_ControlledMosaics_100m_v2_oct2018/1.0.0/default/default028mm/9/269/902.png",
+      "mission_instrument": [
+        "Mars Odyssey THEMIS"
+      ],
+      "classification": "observational_image_product",
+      "coverage_lonlat": [
+        -179.9999997,
+        -65.0006576,
+        179.9998849,
+        65.0007535
+      ],
+      "crs": "Mars equirectangular; WMTS EPSG:104905; top-left [-180,90]; 256 pixel tiles",
+      "native_resolution_m": 100,
+      "tile_spacing_at_equator_m": 81.40140956264587,
+      "units": "display brightness 0\u2013255; neither kelvin nor calibrated thermal inertia",
+      "observation_date": null,
+      "product_version": "v2_oct2018",
+      "nodata": null,
+      "nodata_note": "No numerical fill convention established from WMTS. Missing tiles are unknown coverage. PNG alpha, if present, must be preserved.",
+      "role": "thermal_context_only",
+      "routing_weight": 0,
+      "credit": "NASA/JPL/Arizona State University; served by NASA JPL Mars Trek",
+      "terms": "Preserve mission/instrument credit and source metadata",
+      "verification": "WMTS capabilities downloaded and parsed; sample tile probe recorded separately",
+      "processing": [
+        "WMTS grayscale display product",
+        "Existing demo mosaics/crops at z9 and resamples into 2 m grid; resampling does not improve native resolution"
+      ]
+    }
+  ],
+  "targets": [
+    {
+      "id": "VPB",
+      "name": "Volc\u00e1n Pe\u00f1a Blanca observation station",
+      "coordinates": {
+        "lat": -4.80250974,
+        "lon_east": 137.3804498
+      },
+      "position_sol": 4591,
+      "observation_sol": 4593,
+      "observation_date": "2025-07-06",
+      "rmc": "117_1122",
+      "coordinate_role": "rover station / candidate approach location, not the exact sampled rock",
+      "position_source": "https://mars.nasa.gov/mmgis-maps/MSL/Layers/json/MSL_waypoints.json",
+      "position_uncertainty_m": null,
+      "display_uncertainty_m": 100,
+      "display_uncertainty_status": "conservative application assumption based on mosaic absolute control; not reported rover covariance",
+      "association": "Sol interval association to rover station. Acquisition may precede a same-sol drive. Exact target-to-rover offsets and image site/drive join remain unverified.",
+      "purpose": "Compare bedding orientation and layered outcrop textures.",
+      "evidence_url": "https://science.nasa.gov/blog/curiosity-blog-sols-4593-4594-three-layers-and-a-lot-of-structure-at-volcan-pena-blanca/",
+      "instruments": "Mastcam; MAHLI/APXS/ChemCam activities described in mission plan",
+      "credit": "NASA/JPL-Caltech/MSSS and Curiosity science team",
+      "classification": "sourced_candidate",
+      "activities": [
+        "overview photograph",
+        "detailed survey",
+        "instrument measurement",
+        "sample collection"
+      ],
+      "activity_estimates_status": "hypothetical simulation configuration; not NASA observation metadata",
+      "eligible_for_precise_field_navigation": false
+    },
+    {
+      "id": "NODULE",
+      "name": "Boxwork nodule observation station",
+      "coordinates": {
+        "lat": -4.80653823,
+        "lon_east": 137.3793381
+      },
+      "position_sol": 4636,
+      "observation_sol": 4636,
+      "observation_date": "2025-08-21",
+      "rmc": "118_1752",
+      "coordinate_role": "rover station / candidate approach location, not the exact sampled rock",
+      "position_source": "https://mars.nasa.gov/mmgis-maps/MSL/Layers/json/MSL_waypoints.json",
+      "position_uncertainty_m": null,
+      "display_uncertainty_m": 100,
+      "display_uncertainty_status": "conservative application assumption based on mosaic absolute control; not reported rover covariance",
+      "association": "Sol interval association to rover station. Acquisition may precede a same-sol drive. Exact target-to-rover offsets and image site/drive join remain unverified.",
+      "purpose": "Inspect nodule morphology as evidence relevant to groundwater mineralization.",
+      "evidence_url": "https://science.nasa.gov/photojournal/curiosity-studies-nodules-on-boxwork-formations/",
+      "instruments": "MAHLI; PIA26697",
+      "credit": "NASA/JPL-Caltech/MSSS and Curiosity science team",
+      "classification": "sourced_candidate",
+      "activities": [
+        "overview photograph",
+        "detailed survey",
+        "instrument measurement",
+        "sample collection"
+      ],
+      "activity_estimates_status": "hypothetical simulation configuration; not NASA observation metadata",
+      "eligible_for_precise_field_navigation": false
+    },
+    {
+      "id": "HOLLOW",
+      "name": "Valle de la Luna hollow campaign station",
+      "coordinates": {
+        "lat": -4.80783916,
+        "lon_east": 137.3810353
+      },
+      "position_sol": 4687,
+      "observation_sol": 4702,
+      "observation_date": "2025-10",
+      "rmc": "119_1722",
+      "coordinate_role": "rover station / candidate approach location, not the exact sampled rock",
+      "position_source": "https://mars.nasa.gov/mmgis-maps/MSL/Layers/json/MSL_waypoints.json",
+      "position_uncertainty_m": null,
+      "display_uncertainty_m": 100,
+      "display_uncertainty_status": "conservative application assumption based on mosaic absolute control; not reported rover covariance",
+      "association": "Sol interval association to rover station. Acquisition may precede a same-sol drive. Exact target-to-rover offsets and image site/drive join remain unverified.",
+      "purpose": "Compare hollow bedrock with nearby ridge bedrock.",
+      "evidence_url": "https://science.nasa.gov/blog/curiosity-blog-sols-4702-4708-its-only-spooky-here-on-earth-today/",
+      "instruments": "Curiosity drill campaign",
+      "credit": "NASA/JPL-Caltech/MSSS and Curiosity science team",
+      "classification": "sourced_candidate",
+      "activities": [
+        "overview photograph",
+        "detailed survey",
+        "instrument measurement",
+        "sample collection"
+      ],
+      "activity_estimates_status": "hypothetical simulation configuration; not NASA observation metadata",
+      "eligible_for_precise_field_navigation": false
+    },
+    {
+      "id": "RIDGE",
+      "name": "Nevado Sajama ridge campaign station",
+      "coordinates": {
+        "lat": -4.80800755,
+        "lon_east": 137.3810041
+      },
+      "position_sol": 4711,
+      "observation_sol": 4718,
+      "observation_date": "2025-11-13",
+      "rmc": "120_82",
+      "coordinate_role": "rover station / candidate approach location, not the exact sampled rock",
+      "position_source": "https://mars.nasa.gov/mmgis-maps/MSL/Layers/json/MSL_waypoints.json",
+      "position_uncertainty_m": null,
+      "display_uncertainty_m": 100,
+      "display_uncertainty_status": "conservative application assumption based on mosaic absolute control; not reported rover covariance",
+      "association": "Sol interval association to rover station. Acquisition may precede a same-sol drive. Exact target-to-rover offsets and image site/drive join remain unverified.",
+      "purpose": "Compare ridge sample context with hollow observations.",
+      "evidence_url": "https://science.nasa.gov/blog/curiosity-blog-sols-4716-4722-drilling-success-at-nevado-sajama/",
+      "instruments": "APXS/ChemCam/MAHLI; drilling",
+      "credit": "NASA/JPL-Caltech/MSSS and Curiosity science team",
+      "classification": "sourced_candidate",
+      "activities": [
+        "overview photograph",
+        "detailed survey",
+        "instrument measurement",
+        "sample collection"
+      ],
+      "activity_estimates_status": "hypothetical simulation configuration; not NASA observation metadata",
+      "eligible_for_precise_field_navigation": false
+    },
+    {
+      "id": "POLYGON",
+      "name": "Monte Grande polygon observation station",
+      "coordinates": {
+        "lat": -4.80776275,
+        "lon_east": 137.3810137
+      },
+      "position_sol": 4741,
+      "observation_sol": 4745,
+      "observation_date": "2025-12-11",
+      "rmc": "120_232",
+      "coordinate_role": "rover station / candidate approach location, not the exact sampled rock",
+      "position_source": "https://mars.nasa.gov/mmgis-maps/MSL/Layers/json/MSL_waypoints.json",
+      "position_uncertainty_m": null,
+      "display_uncertainty_m": 100,
+      "display_uncertainty_status": "conservative application assumption based on mosaic absolute control; not reported rover covariance",
+      "association": "Sol interval association to rover station. Acquisition may precede a same-sol drive. Exact target-to-rover offsets and image site/drive join remain unverified.",
+      "purpose": "Document polygon geometry and its relation to bedrock textures.",
+      "evidence_url": "https://science.nasa.gov/blog/curiosity-blog-sols-4743-4749-polygons-in-the-hollow/",
+      "instruments": "MAHLI",
+      "credit": "NASA/JPL-Caltech/MSSS and Curiosity science team",
+      "classification": "sourced_candidate",
+      "activities": [
+        "overview photograph",
+        "detailed survey",
+        "instrument measurement",
+        "sample collection"
+      ],
+      "activity_estimates_status": "hypothetical simulation configuration; not NASA observation metadata",
+      "eligible_for_precise_field_navigation": false
+    }
+  ],
+  "bundled_manifest": "../demo/app/public/data/gale/site.json",
+  "routing_inputs": [
+    "numerical elevation",
+    "derived slope/roughness",
+    "explicit valid-data mask",
+    "clearly labeled inferred or simulated obstacles"
+  ],
+  "science_inputs": [
+    "curated source-backed activities at rover stations",
+    "user-configured science weights"
+  ],
+  "context_only": [
+    "THEMIS display brightness",
+    "historical rover traverse",
+    "historical proposed Curiosity route",
+    "regional geology"
+  ],
+  "gaps": [
+    "Existing demo manifest has no propagated DEM nodata mask; regenerate/verify before treating every cell as assessed.",
+    "Merged DEM grid spacing is not per-pixel native source resolution.",
+    "No calibrated chemical abundances ingested; mission descriptions are evidence of investigations, not composition values.",
+    "Candidate target positions are rover stations; precise rock positions unverified."
+  ],
+  "surface_photos": [
+    {
+      "id": "PIA26697",
+      "title": "Curiosity Studies Nodules on Boxwork Formations",
+      "file": "photos/PIA26697.jpg",
+      "source_url": "https://assets.science.nasa.gov/content/dam/science/psd/photojournal/pia/pia26/pia26697/PIA26697.jpg",
+      "evidence_url": "https://science.nasa.gov/photojournal/curiosity-studies-nodules-on-boxwork-formations/",
+      "mission": "MSL Curiosity",
+      "instrument": "MAHLI",
+      "acquisition_date": "2025-08-21",
+      "sol": 4636,
+      "published": "2026-02-23",
+      "credit": "NASA/JPL-Caltech/MSSS",
+      "processing": "NASA mosaic of 50 images; 10 focus settings at each of five locations; local file unchanged",
+      "sha256": "a5be491a63d6815cc0759e3782dd2a835d7e7b302e6527940bbdde8a1f7bff01",
+      "location_role": "Context image associated with rover station NODULE; exact imaged feature offset from camera is not verified; do not treat image center as a mapped point."
+    }
+  ],
+  "reuse_clearance": {
+    "status": "user_confirmed",
+    "date": "2026-11-14",
+    "scope": "Adapt both reference projects with retained MIT notices; competition clearance supplied by user."
+  },
+  "validity_verification": {
+    "source_url": "https://asc-pds-services.s3.us-west-2.amazonaws.com/mosaic/Mars/MSL/MSL_Gale_DEM_Mosaic_1m_v3.tif",
+    "checked_utc": "2026-11-14",
+    "source_nodata": -32767.0,
+    "source_resolution_m": [
+      1.0,
+      1.0
+    ],
+    "source_transform": [
+      1.0,
+      0.0,
+      8127993.492786024,
+      0.0,
+      -1.0,
+      -244781.075189438,
+      0.0,
+      0.0,
+      1.0
+    ],
+    "source_window": {
+      "col_off": 13724,
+      "row_off": 38593,
+      "width": 2999,
+      "height": 2999
+    },
+    "source_crs": "PROJCS[\"Mars_Equirectangular_clon0\",GEOGCS[\"GCS_Mars_2000_Sphere\",DATUM[\"Mars_2000_(Sphere)\",SPHEROID[\"Mars_2000_Sphere_IAU_IAG\",3396190,0],AUTHORITY[\"ESRI\",\"106971\"]],PRIMEM[\"Reference_Meridian\",0],UNIT[\"degree\",0.0174532925199433,AUTHORITY[\"EPSG\",\"9122\"]]],PROJECTION[\"Equirectangular\"],PARAMETER[\"standard_parallel_1\",0],PARAMETER[\"central_meridian\",0],PARAMETER[\"false_easting\",0],PARAMETER[\"false_northing\",0],UNIT[\"metre\",1,AUTHORITY[\"EPSG\",\"9001\"]],AXIS[\"Easting\",EAST],AXIS[\"Northing\",NORTH]]",
+    "grid_dimensions": [
+      1499,
+      1499
+    ],
+    "valid_cells": 2247001,
+    "invalid_cells": 0,
+    "source_window_nodata_samples": 0,
+    "method": "Original numerical DEM masked read; finite and not nodata; 6 m support halo; all four 1 m samples required per 2 m navigation cell. PixelIsPoint handled by GDAL transform. Validity means observed source support, not traversability or native-resolution assurance.",
+    "elevation_comparison_abs_m": {
+      "mean": 0.0026464712389129524,
+      "max": 0.0057470581250527175,
+      "p99": 0.005541081250157731
+    },
+    "file": "grids/validity.bin",
+    "sha256": "9591b6b224a48c2a66ab7c3fc1c9a89f1be8b8d24085bda8e0fc6c4adfe807f3"
+  }
+}

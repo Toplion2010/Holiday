@@ -1,0 +1,210 @@
+{
+  "type": "FeatureCollection",
+  "features": [
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          137.3804498,
+          -4.80250974
+        ]
+      },
+      "properties": {
+        "id": "VPB",
+        "name": "Volcán Peña Blanca observation station",
+        "coordinates": {
+          "lat": -4.80250974,
+          "lon_east": 137.3804498
+        },
+        "position_sol": 4591,
+        "observation_sol": 4593,
+        "observation_date": "2025-07-06",
+        "rmc": "117_1122",
+        "coordinate_role": "rover station / candidate approach location, not the exact sampled rock",
+        "position_source": "https://mars.nasa.gov/mmgis-maps/MSL/Layers/json/MSL_waypoints.json",
+        "position_uncertainty_m": null,
+        "display_uncertainty_m": 100,
+        "display_uncertainty_status": "conservative application assumption based on mosaic absolute control; not reported rover covariance",
+        "association": "Sol interval association to rover station. Acquisition may precede a same-sol drive. Exact target-to-rover offsets and image site/drive join remain unverified.",
+        "purpose": "Compare bedding orientation and layered outcrop textures.",
+        "evidence_url": "https://science.nasa.gov/blog/curiosity-blog-sols-4593-4594-three-layers-and-a-lot-of-structure-at-volcan-pena-blanca/",
+        "instruments": "Mastcam; MAHLI/APXS/ChemCam activities described in mission plan",
+        "credit": "NASA/JPL-Caltech/MSSS and Curiosity science team",
+        "classification": "sourced_candidate",
+        "activities": [
+          "overview photograph",
+          "detailed survey",
+          "instrument measurement",
+          "sample collection"
+        ],
+        "activity_estimates_status": "hypothetical simulation configuration; not NASA observation metadata",
+        "eligible_for_precise_field_navigation": false
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          137.3793381,
+          -4.80653823
+        ]
+      },
+      "properties": {
+        "id": "NODULE",
+        "name": "Boxwork nodule observation station",
+        "coordinates": {
+          "lat": -4.80653823,
+          "lon_east": 137.3793381
+        },
+        "position_sol": 4636,
+        "observation_sol": 4636,
+        "observation_date": "2025-08-21",
+        "rmc": "118_1752",
+        "coordinate_role": "rover station / candidate approach location, not the exact sampled rock",
+        "position_source": "https://mars.nasa.gov/mmgis-maps/MSL/Layers/json/MSL_waypoints.json",
+        "position_uncertainty_m": null,
+        "display_uncertainty_m": 100,
+        "display_uncertainty_status": "conservative application assumption based on mosaic absolute control; not reported rover covariance",
+        "association": "Sol interval association to rover station. Acquisition may precede a same-sol drive. Exact target-to-rover offsets and image site/drive join remain unverified.",
+        "purpose": "Inspect nodule morphology as evidence relevant to groundwater mineralization.",
+        "evidence_url": "https://science.nasa.gov/photojournal/curiosity-studies-nodules-on-boxwork-formations/",
+        "instruments": "MAHLI; PIA26697",
+        "credit": "NASA/JPL-Caltech/MSSS and Curiosity science team",
+        "classification": "sourced_candidate",
+        "activities": [
+          "overview photograph",
+          "detailed survey",
+          "instrument measurement",
+          "sample collection"
+        ],
+        "activity_estimates_status": "hypothetical simulation configuration; not NASA observation metadata",
+        "eligible_for_precise_field_navigation": false
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          137.3810353,
+          -4.80783916
+        ]
+      },
+      "properties": {
+        "id": "HOLLOW",
+        "name": "Valle de la Luna hollow campaign station",
+        "coordinates": {
+          "lat": -4.80783916,
+          "lon_east": 137.3810353
+        },
+        "position_sol": 4687,
+        "observation_sol": 4702,
+        "observation_date": "2025-10",
+        "rmc": "119_1722",
+        "coordinate_role": "rover station / candidate approach location, not the exact sampled rock",
+        "position_source": "https://mars.nasa.gov/mmgis-maps/MSL/Layers/json/MSL_waypoints.json",
+        "position_uncertainty_m": null,
+        "display_uncertainty_m": 100,
+        "display_uncertainty_status": "conservative application assumption based on mosaic absolute control; not reported rover covariance",
+        "association": "Sol interval association to rover station. Acquisition may precede a same-sol drive. Exact target-to-rover offsets and image site/drive join remain unverified.",
+        "purpose": "Compare hollow bedrock with nearby ridge bedrock.",
+        "evidence_url": "https://science.nasa.gov/blog/curiosity-blog-sols-4702-4708-its-only-spooky-here-on-earth-today/",
+        "instruments": "Curiosity drill campaign",
+        "credit": "NASA/JPL-Caltech/MSSS and Curiosity science team",
+        "classification": "sourced_candidate",
+        "activities": [
+          "overview photograph",
+          "detailed survey",
+          "instrument measurement",
+          "sample collection"
+        ],
+        "activity_estimates_status": "hypothetical simulation configuration; not NASA observation metadata",
+        "eligible_for_precise_field_navigation": false
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          137.3810041,
+          -4.80800755
+        ]
+      },
+      "properties": {
+        "id": "RIDGE",
+        "name": "Nevado Sajama ridge campaign station",
+        "coordinates": {
+          "lat": -4.80800755,
+          "lon_east": 137.3810041
+        },
+        "position_sol": 4711,
+        "observation_sol": 4718,
+        "observation_date": "2025-11-13",
+        "rmc": "120_82",
+        "coordinate_role": "rover station / candidate approach location, not the exact sampled rock",
+        "position_source": "https://mars.nasa.gov/mmgis-maps/MSL/Layers/json/MSL_waypoints.json",
+        "position_uncertainty_m": null,
+        "display_uncertainty_m": 100,
+        "display_uncertainty_status": "conservative application assumption based on mosaic absolute control; not reported rover covariance",
+        "association": "Sol interval association to rover station. Acquisition may precede a same-sol drive. Exact target-to-rover offsets and image site/drive join remain unverified.",
+        "purpose": "Compare ridge sample context with hollow observations.",
+        "evidence_url": "https://science.nasa.gov/blog/curiosity-blog-sols-4716-4722-drilling-success-at-nevado-sajama/",
+        "instruments": "APXS/ChemCam/MAHLI; drilling",
+        "credit": "NASA/JPL-Caltech/MSSS and Curiosity science team",
+        "classification": "sourced_candidate",
+        "activities": [
+          "overview photograph",
+          "detailed survey",
+          "instrument measurement",
+          "sample collection"
+        ],
+        "activity_estimates_status": "hypothetical simulation configuration; not NASA observation metadata",
+        "eligible_for_precise_field_navigation": false
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          137.3810137,
+          -4.80776275
+        ]
+      },
+      "properties": {
+        "id": "POLYGON",
+        "name": "Monte Grande polygon observation station",
+        "coordinates": {
+          "lat": -4.80776275,
+          "lon_east": 137.3810137
+        },
+        "position_sol": 4741,
+        "observation_sol": 4745,
+        "observation_date": "2025-12-11",
+        "rmc": "120_232",
+        "coordinate_role": "rover station / candidate approach location, not the exact sampled rock",
+        "position_source": "https://mars.nasa.gov/mmgis-maps/MSL/Layers/json/MSL_waypoints.json",
+        "position_uncertainty_m": null,
+        "display_uncertainty_m": 100,
+        "display_uncertainty_status": "conservative application assumption based on mosaic absolute control; not reported rover covariance",
+        "association": "Sol interval association to rover station. Acquisition may precede a same-sol drive. Exact target-to-rover offsets and image site/drive join remain unverified.",
+        "purpose": "Document polygon geometry and its relation to bedrock textures.",
+        "evidence_url": "https://science.nasa.gov/blog/curiosity-blog-sols-4743-4749-polygons-in-the-hollow/",
+        "instruments": "MAHLI",
+        "credit": "NASA/JPL-Caltech/MSSS and Curiosity science team",
+        "classification": "sourced_candidate",
+        "activities": [
+          "overview photograph",
+          "detailed survey",
+          "instrument measurement",
+          "sample collection"
+        ],
+        "activity_estimates_status": "hypothetical simulation configuration; not NASA observation metadata",
+        "eligible_for_precise_field_navigation": false
+      }
+    }
+  ]
+}
