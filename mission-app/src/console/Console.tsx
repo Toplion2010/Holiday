@@ -32,7 +32,7 @@ export default function Console() {
   return (
     <div className="console">
       <header className="console__head">
-        <a className="console__brand" href="#/mission" title="Change mission settings">
+        <a className="console__brand" href="#/home" title="Back to home">
           ARES//NAV
         </a>
         <dl className="status-strip">

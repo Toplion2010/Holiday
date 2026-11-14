@@ -1,33 +1,38 @@
-import { StrictMode, lazy, Suspense, useEffect, useState } from 'react'
+import { StrictMode, type ComponentType } from 'react'
 import { createRoot } from 'react-dom/client'
-import './app/styles.css'
-import Game from './game/Game.tsx'
 
-// The original ARES planner console stays available at #/planner.
-const Planner = lazy(async () => {
-  await import('./expedition/expedition.css')
-  return import('./expedition/Expedition.tsx')
-})
+// Three groups of screens with their own global stylesheets. ARES//NAV (index.css) and the
+// Martian Map game (app/styles.css) define the same CSS variables, so only one group is
+// loaded per page; moving between groups reloads the page.
+type World = 'nav' | 'game' | 'planner'
 
-function Root() {
-  const [hash, setHash] = useState(() => window.location.hash)
-  useEffect(() => {
-    const on = () => setHash(window.location.hash)
-    window.addEventListener('hashchange', on)
-    return () => window.removeEventListener('hashchange', on)
-  }, [])
-  if (hash.startsWith('#/planner')) {
-    return (
-      <Suspense fallback={null}>
-        <Planner />
-      </Suspense>
-    )
-  }
-  return <Game />
+const worldOf = (hash: string): World =>
+  hash.startsWith('#/game') ? 'game' : hash.startsWith('#/planner') ? 'planner' : 'nav'
+
+const LOADERS: Record<World, () => Promise<ComponentType>> = {
+  nav: async () => {
+    await import('./index.css')
+    return (await import('./App.tsx')).default
+  },
+  game: async () => {
+    await import('./app/styles.css')
+    return (await import('./game/Game.tsx')).default
+  },
+  planner: async () => {
+    await import('./expedition/expedition.css')
+    return (await import('./expedition/Expedition.tsx')).default
+  },
 }
 
-createRoot(document.getElementById('root')!).render(
-  <StrictMode>
-    <Root />
-  </StrictMode>,
-)
+const world = worldOf(window.location.hash)
+window.addEventListener('hashchange', () => {
+  if (worldOf(window.location.hash) !== world) window.location.reload()
+})
+
+void LOADERS[world]().then((Root) => {
+  createRoot(document.getElementById('root')!).render(
+    <StrictMode>
+      <Root />
+    </StrictMode>,
+  )
+})

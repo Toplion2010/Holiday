@@ -1,0 +1,42 @@
+{
+  "_note": "Placeholder data for the Mission Control screen (#/control). Edit freely; values are not measurements.",
+  "base": {
+    "name": "HAB-1",
+    "lat": -4.797546,
+    "lon": 137.384531,
+    "status": "Nominal",
+    "powerPct": 86,
+    "o2ReserveKg": 412,
+    "suitsReady": 2,
+    "suitsTotal": 3,
+    "rover": "Docked"
+  },
+  "crew": [
+    { "callsign": "ARES-1 EV1", "role": "EVA lead", "suit": "Ready", "o2Pct": 100, "batteryPct": 98, "heartRateBpm": 68 },
+    { "callsign": "ARES-1 EV2", "role": "Geologist", "suit": "Ready", "o2Pct": 100, "batteryPct": 95, "heartRateBpm": 74 },
+    { "callsign": "ARES-1 IV", "role": "Habitat / comms", "suit": "Stowed", "o2Pct": 92, "batteryPct": 61, "heartRateBpm": 70 }
+  ],
+  "site": {
+    "name": "Gale Crater",
+    "area": "Mount Sharp boxwork",
+    "sizeKm": "3 × 3 km",
+    "description": "Ridges of mineral-cemented fractures (boxwork) on the lower slopes of Mount Sharp, studied by Curiosity in 2025. Groundwater once moved through these fractures, so the ridges record how long Gale stayed wet."
+  },
+  "conditions": {
+    "source": "REMS-based estimate",
+    "airTempC": { "min": -78, "max": -12 },
+    "windMs": 6,
+    "dust": "Low (τ ≈ 0.5)",
+    "radiationUGyH": 10.9,
+    "sunrise": "05:52",
+    "sunset": "17:58",
+    "evaWindow": "06:00–18:00"
+  },
+  "expeditions": [
+    { "id": "SO-1", "scienceValue": 40, "estMinutes": 95, "risk": "Med" },
+    { "id": "SO-2", "scienceValue": 28, "estMinutes": 70, "risk": "Low" },
+    { "id": "SO-3", "scienceValue": 35, "estMinutes": 210, "risk": "High" },
+    { "id": "SO-4", "scienceValue": 22, "estMinutes": 180, "risk": "Med" },
+    { "id": "SO-5", "scienceValue": 15, "estMinutes": 85, "risk": "Low" }
+  ]
+}

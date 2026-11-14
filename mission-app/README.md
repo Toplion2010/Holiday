@@ -2,6 +2,24 @@
 
 Mars EVA game on real HiRISE terrain of the Gale crater boxwork area, Mount Sharp. The 3D scene, HUD, sky and time model are the Martian Map walk mode (copied from `nasa-hackathon-main/frontend/src/features/{walk,sky,hud}` and `src/shared/{eva,time}`); resources, science scoring and faults are the ARES Expedition engine (`src/expedition/`); the astronaut is `mars-exploration-3d/mars_astronaut_animated.glb`.
 
+## Screens
+
+| Route | Screen |
+|---|---|
+| `#/` | ARES//NAV boot checks, any key → home |
+| `#/home` | Home: **Start simulation** (S or 1 → `#/mission`) and **Mission control** (M or 2 → `#/control`) |
+| `#/control` | Mission Control: base, crew, site, conditions, today's expeditions (from `src/data/base.json`) |
+| `#/mission` → `#/console` | EVA setup and planning console |
+| `#/credits` | Data sources |
+| `#/game` | Mars EVA game (below) |
+| `#/planner` | Original ARES Expedition planner |
+
+ARES//NAV screens and the game use different global stylesheets with the same CSS variable names, so `src/main.tsx` loads one group per page and reloads when you move between groups.
+
+### Editing Mission Control data
+
+Everything on `#/control` except stop names, objectives and distances comes from `src/data/base.json`: `base`, `crew` (one entry per crew member), `site`, `conditions` (placeholders, shown as "REMS-based estimate") and `expeditions` (`id` must match a waypoint in `src/lib/site.ts`, for example `SO-1`; `risk` is `Low`, `Med` or `High`). The dev server reloads on save.
+
 ## Play
 
 ```

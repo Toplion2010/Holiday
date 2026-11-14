@@ -3,6 +3,8 @@ import { FxProvider } from './design'
 import Boot from './boot/Boot'
 import MissionSelect from './mission/MissionSelect'
 import Credits from './credits/Credits'
+import Home from './home/Home'
+import MissionControl from './control/MissionControl'
 
 // The console pulls in OpenLayers; load it on demand.
 const Console = lazy(() => import('./console/Console'))
@@ -25,9 +27,11 @@ const go = (h: string) => {
 function Route({ hash }: { hash: string }) {
   if (hash.startsWith('#/console')) return <Console />
   if (hash.startsWith('#/mission')) return <MissionSelect onBegin={() => go('#/console')} />
+  if (hash.startsWith('#/home')) return <Home onStart={() => go('#/mission')} onControl={() => go('#/control')} />
+  if (hash.startsWith('#/control')) return <MissionControl />
   if (hash.startsWith('#/credits')) return <Credits />
   if (hash.startsWith('#/design')) return <DesignBench />
-  return <Boot onDone={() => go('#/mission')} />
+  return <Boot onDone={() => go('#/home')} />
 }
 
 export default function App() {
