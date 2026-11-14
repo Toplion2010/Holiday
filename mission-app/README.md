@@ -1,5 +1,41 @@
 # ARES Expedition
 
+Mars EVA game on real HiRISE terrain of the Gale crater boxwork area, Mount Sharp. The 3D scene, HUD, sky and time model are the Martian Map walk mode (copied from `nasa-hackathon-main/frontend/src/features/{walk,sky,hud}` and `src/shared/{eva,time}`); resources, science scoring and faults are the ARES Expedition engine (`src/expedition/`); the astronaut is `mars-exploration-3d/mars_astronaut_animated.glb`.
+
+## Play
+
+```
+npm install
+npm run dev
+```
+
+Title → Loadout → Exit the airlock. Click the scene to capture the mouse.
+
+| Key | Action |
+|---|---|
+| W A S D / arrows | walk (in the rover: W/S drive, A/D turn) |
+| Mouse | look |
+| E | work at a science station / enter the habitat to end the EVA |
+| R | patch a suit leak (5 min) |
+| V | third-person / helmet view |
+| 1 2 3 | time ×1 ×10 ×60 |
+| H | HUD full / minimal |
+| Esc | release mouse; Esc again returns to the title screen |
+
+Goal: reach the orange beacons (five Curiosity stations), do the science, and get back to the blue habitat beacon before oxygen, suit power or the EVA time limit run out. Random events: dust storm (sky optical depth rises), suit leak (oxygen use doubles), comms blackout, rover battery fault. "Go to point" and minimap jumps are charged as walking that distance at 0.7 m/s.
+
+The original planner console is at `#/planner`.
+
+### What changed in the copied Martian Map code
+
+- `features/walk/walkScene.ts`: optional `hooks` (`beforeRender` / `afterRender`) and `setInputEnabled()`; nothing else.
+- `features/walk/WalkPanel.tsx`: optional `game` prop that passes the hooks to the scene and draws game panels over it.
+- Config: `@` → `src` alias in `vite.config.ts` / `tsconfig.app.json`; `erasableSyntaxOnly` off (the copied code uses parameter properties).
+- Site packages copied to `public/data/local/` (Gale is the game site; Ares 3 and Jezero are there for the copied tests only and are not listed in `index.json`).
+
+## Planner (original ARES Expedition)
+
+
 Local Mars expedition prototype, adapted from ARES//NAV and Martian Map with user-cleared reuse. Original applications remain in sibling folders.
 
 ## Run

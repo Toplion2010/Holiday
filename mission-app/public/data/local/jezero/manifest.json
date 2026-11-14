@@ -1,0 +1,191 @@
+{
+ "schema_version": 1,
+ "id": "jezero",
+ "title": "Езеро, западный вал кратера: путь Perseverance к солу 2022",
+ "note": "Подъём Perseverance на западный вал кратера Езеро и текущая позиция на сол 2022. Рельеф 1 м есть только в восточной части; запад, включая текущую позицию, покрыт лишь CTX 20 м.",
+ "crs": "+proj=eqc +lat_ts=0 +lat_0=0 +lon_0=0 +x_0=0 +y_0=0 +R=3396190 +units=m +no_defs=True",
+ "coordinates": "planetocentric latitude, east longitude 0-360",
+ "center": {
+  "lat": 18.435,
+  "lon_east": 77.24
+ },
+ "bounds_eqc_m": [
+  4576877.64,
+  1091729.05,
+  4579877.64,
+  1093729.05
+ ],
+ "bounds_lonlat": {
+  "west": 77.214694,
+  "south": 18.418129,
+  "east": 77.265306,
+  "north": 18.451871
+ },
+ "size_m": [
+  3000.0,
+  2000.0
+ ],
+ "height": {
+  "file": "height.png",
+  "width": 3000,
+  "height": 2000,
+  "pixel_m": 1.0,
+  "encoding": "units=(R<<8)|G; height_m=base_m+(units-1)*step_m; units=0 is NoData",
+  "base_m": -2014.0,
+  "step_m": 0.01,
+  "min_m": -2013.7,
+  "max_m": -1645.47,
+  "nodata_fraction": 0.0,
+  "vertical_reference": "areoid (как в продукте HiRISE DTM USGS)",
+  "rows": "first row is north edge, columns go east",
+  "source_channel": {
+   "channel": "B",
+   "values": {
+    "0": "HiRISE DTM 1 м",
+    "1": "CTX DTM 20 м (билинейная интерполяция)",
+    "2": "переходная полоса"
+   },
+   "hirise_fraction": 0.2552,
+   "fill_fraction": 0.7448,
+   "hirise_shift_m": -5.58,
+   "hirise_minus_fill_m": {
+    "p10": 1.02,
+    "median": 5.58,
+    "p90": 9.84
+   }
+  }
+ },
+ "ortho": {
+  "file": "ortho.webp",
+  "width": 6000,
+  "height": 4000,
+  "pixel_m": 0.5,
+  "value_0": "нет данных",
+  "hirise_fraction": 0.2547,
+  "fill_note": "где нет HiRISE — JEZ_ctx_B_soc_008_orthoMosaic_6m, яркость подогнана к HiRISE"
+ },
+ "ortho_hi": {
+  "file": "ortho_hi.webp",
+  "width": 4096,
+  "height": 4096,
+  "pixel_m": 0.25,
+  "bounds_eqc_m": [
+   4578853.64,
+   1092705.05,
+   4579877.64,
+   1093729.05
+  ],
+  "center": {
+   "lat": 18.443233,
+   "lon_east": 77.256668
+  },
+  "product": "JEZ_hirise_soc_007_orthoMosaic_25cm_Ortho_blend120",
+  "url": "https://asc-pds-services.s3.us-west-2.amazonaws.com/mosaic/mars2020_trn/HiRISE/JEZ_hirise_soc_007_orthoMosaic_25cm_Ortho_blend120.tif",
+  "source_pixel_m": 0.25,
+  "hirise_fraction": 0.8158,
+  "alpha": "есть только при пропусках: 255 — снимок HiRISE, 0 — нет данных (брать ortho)",
+  "stretch": "та же линейная растяжка яркости, что у ortho.webp",
+  "resampling": "bilinear из исходного пикселя; без повышения резкости",
+  "choice": "метки не помещаются в одно окно; окно содержит место старта и сдвинуто к большей площади HiRISE",
+  "blend_m": 25,
+  "start": {
+   "lat": 18.440094,
+   "lon_east": 77.253116
+  },
+  "sha256": "bd5f0609de1f47bbe699c43be1107aaa64a75bc2ea8ea45789d96326cb140c23"
+ },
+ "sources": [
+  {
+   "role": "dtm",
+   "product": "DTM_MOLAtopography_DeltaGeoid_Jezero_CR_SOUTH_Edited_affine_1m",
+   "url": "https://asc-pds-services.s3.us-west-2.amazonaws.com/mosaic/mars2020_trn/HiRISE/DTM_MOLAtopography_DeltaGeoid_Jezero_CR_SOUTH_Edited_affine_1m_Eqc_latTs0_lon0.tif",
+   "source_pixel_m": 1.0,
+   "credit": "NASA/JPL/University of Arizona (HiRISE); Mars 2020 TRN HiRISE DTM и ортомозаика USGS Astrogeology (Fergason et al., 2020), doi:10.5066/P9REJ9JN",
+   "license": "USGS, общественное достояние"
+  },
+  {
+   "role": "ortho",
+   "product": "JEZ_hirise_soc_007_orthoMosaic_25cm_Ortho_blend120",
+   "url": "https://asc-pds-services.s3.us-west-2.amazonaws.com/mosaic/mars2020_trn/HiRISE/JEZ_hirise_soc_007_orthoMosaic_25cm_Ortho_blend120.tif",
+   "source_pixel_m": 0.25,
+   "credit": "NASA/JPL/University of Arizona (HiRISE); Mars 2020 TRN HiRISE DTM и ортомозаика USGS Astrogeology (Fergason et al., 2020), doi:10.5066/P9REJ9JN",
+   "license": "USGS, общественное достояние"
+  },
+  {
+   "role": "dtm_fill",
+   "product": "JEZ_ctx_B_soc_008_DTM_MOLAtopography_DeltaGeoid_20m",
+   "url": "https://asc-pds-services.s3.us-west-2.amazonaws.com/mosaic/mars2020_trn/CTX/JEZ_ctx_B_soc_008_DTM_MOLAtopography_DeltaGeoid_20m_Eqc_latTs0_lon0.tif",
+   "source_pixel_m": 20.0,
+   "credit": "NASA/JPL/MSSS (CTX); Mars 2020 TRN CTX DTM и ортомозаика USGS Astrogeology, doi:10.5066/P906QQT8",
+   "license": "USGS, общественное достояние"
+  },
+  {
+   "role": "ortho_fill",
+   "product": "JEZ_ctx_B_soc_008_orthoMosaic_6m",
+   "url": "https://asc-pds-services.s3.us-west-2.amazonaws.com/mosaic/mars2020_trn/CTX/JEZ_ctx_B_soc_008_orthoMosaic_6m_Eqc_latTs0_lon0.tif",
+   "source_pixel_m": 6.0,
+   "credit": "NASA/JPL/MSSS (CTX); Mars 2020 TRN CTX DTM и ортомозаика USGS Astrogeology, doi:10.5066/P906QQT8",
+   "license": "USGS, общественное достояние"
+  }
+ ],
+ "pois": [
+  {
+   "id": "rover",
+   "title": "Perseverance, сол 2022",
+   "lat": 18.43559434,
+   "lon_east": 77.23322287,
+   "note": "Текущая позиция по M20_waypoints_current.json; вне HiRISE DTM, рельеф CTX 20 м"
+  }
+ ],
+ "track": {
+  "source_url": "https://mars.nasa.gov/mmgis-maps/M20/Layers/json/M20_waypoints.json",
+  "mission": "M20",
+  "points": 128,
+  "sols": [
+   1592,
+   2022
+  ],
+  "dtm_minus_rover_m": {
+   "n": 128,
+   "median": -1.88,
+   "p10": -4.43,
+   "p90": 3.21
+  },
+  "note": "Высота трека — телеметрия ровера (elev_geoid). Линию маршрута класть на рельеф DTM; разница — смещение вертикального датума, а не ошибка точки.",
+  "by_dtm_source": {
+   "hirise": {
+    "points": 31,
+    "median_dtm_minus_rover_m": -2.08
+   },
+   "blend": {
+    "points": 1,
+    "median_dtm_minus_rover_m": -6.84
+   },
+   "fill": {
+    "points": 96,
+    "median_dtm_minus_rover_m": -0.57
+   }
+  }
+ },
+ "generated_by": "backend/scripts/build_local_package.py",
+ "sha256": {
+  "height": "3b1b5f31fa2c282579f2bd629f0ca0b4f1e87b5ab2f48b3b3abe5c8a3f83106d",
+  "ortho": "643db123b85fff482e71d3c294ce204d1e88a020d83d0773cd75061295400d06",
+  "ortho_hi": "bd5f0609de1f47bbe699c43be1107aaa64a75bc2ea8ea45789d96326cb140c23",
+  "track": "e2ebde3d77fa96798437bf46dff8d9df2eeefa0ca3f2f6a4a56e1b9cb95af9c8",
+  "backdrop": "c5835b92d6956dc5733b6ee714e5d42924e861e6ea065a8f5f028fcbc790e323"
+ },
+ "quality_note": "HiRISE-часть участка — стереопара CR (Crater Rim), самая западная в мозаике TRN. Паспорт USGS: «several quality issues due to uncompensated y-parallax ... users should be cautious when using this area for analysis». Подписывать как зону пониженного качества. Западнее HiRISE DTM нет ни в TRN, ни в PDS: там высоты CTX 20 м и ортофото CTX 6 м, мелкий рельеф не виден.",
+ "backdrop": {
+  "file": "backdrop.glb",
+  "pixel_m": 200,
+  "grid_m": 400,
+  "frame": "те же оси и нулевой уровень, что у участка: x восток, y = высота − base_m, z юг; метры",
+  "vexag": 1,
+  "label": "дальний план: обзорный рельеф кратера Езеро ~200 м/пикс, без снимка",
+  "note": "Кратер Езеро из jezerocode.glb, привязан по MOLA MEGDR и высотам участка (корреляция 0,988), высоты приведены к ×1. Под участком вырезан, у края на 3 м ниже участка с переходом 4 км.",
+  "credit": "Обзорный рельеф кратера Езеро (~200 м/пикс), подготовлен командой по глобальным данным; масштаб и положение проверены по MOLA MEGDR (NASA/GSFC MOLA Science Team) и HiRISE/CTX DTM Mars 2020 TRN (USGS)",
+  "generated_by": "backend/scripts/blender/site_scene.py --backdrop jezerocode.glb --backdrop-glb-step 2 (калибровка backend/scripts/blender/backdrops/jezerocode.json)",
+  "sha256": "c5835b92d6956dc5733b6ee714e5d42924e861e6ea065a8f5f028fcbc790e323"
+ }
+}
