@@ -153,7 +153,7 @@ export class GameSession {
   private nextEventAt: number
   private scene: WalkScene | null = null
   private crumbs: { x: number; z: number }[] = []
-  private pilot: { reason: AutopilotReason; path: { x: number; z: number }[]; idx: number; heading: number | null; check: { t: number; d: number }; skips: number } | null = null
+  private pilot: { reason: AutopilotReason; path: { x: number; z: number }[]; idx: number; check: { t: number; d: number }; skips: number } | null = null
   private hrHigh = 0
   /** After the player cancels an oxygen autopilot, do not re-engage for 5 simulated minutes. */
   private autoSuppressUntil = 0
@@ -223,7 +223,7 @@ export class GameSession {
 
     if (!this.outcome) {
       this.simulate(info, dx, dz, moved)
-      if (this.pilot) this.steer(info, dx, dz)
+      if (this.pilot) this.steer(info)
     }
 
     const walking = info.vehicle === 'walk'
@@ -275,7 +275,8 @@ export class GameSession {
     s.position = [lonlat.lonEast * METERS_PER_DEG, lonlat.lat * METERS_PER_DEG]
     s.aboard = info.vehicle === 'rover'
     if (s.aboard) s.rover = [...s.position]
-    if (moved > 0.01) s.heading = (Math.atan2(dx, -dz) * 180 / Math.PI + 360) % 360
+    if (s.aboard && this.scene) s.heading = ((-this.scene.vehicleYaw * 180 / Math.PI) % 360 + 360) % 360
+    else if (moved > 0.01) s.heading = (Math.atan2(dx, -dz) * 180 / Math.PI + 360) % 360
 
     if (moved > 50) {
       // "Go to point" / minimap jump: charged as walking there at the assumed speed.
@@ -459,7 +460,7 @@ export class GameSession {
       this.scene?.setInputEnabled(true)
     }
     const path = [...this.crumbs].reverse()
-    this.pilot = { reason, path, idx: 0, heading: null, check: { t: 0, d: Infinity }, skips: 0 }
+    this.pilot = { reason, path, idx: 0, check: { t: 0, d: Infinity }, skips: 0 }
     globalThis.document?.exitPointerLock?.()
     record(this.state, 'autopilot', `Autopilot home engaged (${reason})`)
     this.say(
@@ -490,7 +491,7 @@ export class GameSession {
     return this.pilot?.reason === 'medical'
   }
 
-  private steer(info: WalkFrameInfo, dx: number, dz: number): void {
+  private steer(info: WalkFrameInfo): void {
     const p = this.pilot!
     let target = p.path[p.idx]
     while (target && Math.hypot(target.x - info.x, target.z - info.z) < 2.5) {
@@ -526,11 +527,11 @@ export class GameSession {
       r.x += (-0.12 - r.x) * Math.min(1, info.dt * 2)
       this.scene?.setJoystick(0, 1)
     } else {
-      // Rover: steer by the direction it is actually moving.
-      if (Math.hypot(dx, dz) > 1e-3) p.heading = Math.atan2(dx, dz)
-      const want = Math.atan2(tx, tz)
-      const diff = p.heading === null ? 0 : Math.atan2(Math.sin(want - p.heading), Math.cos(want - p.heading))
-      this.scene?.setJoystick(Math.max(-1, Math.min(1, -diff * 2)), Math.abs(diff) > 1.2 ? 0.3 : 1)
+      // Use chassis yaw, even while stationary/reversing or looking sideways.
+      const want = Math.atan2(-tx, -tz)
+      const yaw = this.scene?.vehicleYaw ?? 0
+      const diff = Math.atan2(Math.sin(want - yaw), Math.cos(want - yaw))
+      this.scene?.setJoystick(Math.max(-1, Math.min(1, -diff * 2)), Math.abs(diff) > 1.2 ? 0 : 1)
     }
   }
 

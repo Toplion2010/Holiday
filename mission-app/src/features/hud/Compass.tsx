@@ -62,7 +62,7 @@ export function Compass({ headingDeg, baseBearingDeg, baseDistanceM }: CompassPr
         курс {Math.round(norm(headingDeg))}° · база {atBase ? 'здесь' : `${Math.round(norm(baseBearingDeg))}°, ${formatDistance(baseDistanceM)}`}
         <Badge
           prov="data"
-          tip="Курс: направление взгляда в градусах от севера по часовой стрелке. База: точка старта выхода, азимут и расстояние до неё по прямой по модели рельефа сцены."
+          tip="Курс: направление ровера (пешком — взгляда) в градусах от севера по часовой стрелке. База: точка старта выхода, азимут и расстояние до неё по прямой по модели рельефа сцены."
         />
       </div>
     </div>

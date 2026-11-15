@@ -63,7 +63,7 @@ export function BaseScreen({
     <div className="base-screen">
       <div ref={host} className="base3d" />
       <header className="base-top">
-        <a className="base-back" href="#/home">← ARES//NAV home</a>
+        <a className="base-back" href="#/home">← HolySquare home</a>
         <div>
           <span className="micro-label">HAB-1 · Gale crater · Mount Sharp boxwork</span>
           <h1 className="base-title">Prepare the EVA</h1>

@@ -84,7 +84,7 @@ export default function Boot({ onDone }: { onDone: () => void }) {
   return (
     <main className="boot" onClick={() => ready && onDone()}>
       <CrtScreen label="System start-up" className="boot__screen">
-        <div className="boot__title">ARES//NAV</div>
+        <div className="boot__title">HolySquare</div>
         <div className="boot__sub">Interplanetary survival guide · Martian map</div>
         <ol className="boot__steps" aria-live="polite">
           {steps.map((s) => (

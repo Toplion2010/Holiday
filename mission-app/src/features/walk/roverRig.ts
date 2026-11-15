@@ -12,11 +12,10 @@ const MAST_RIGHT_M = 0.55;
 /** Полуколея и полубаза для посадки корпуса на рельеф по четырём точкам. */
 const HALF_TRACK_M = 1.15;
 const HALF_BASE_M = 1.3;
-/**
- * В файле модели длинная ось и направление «вперёд» не совпадают с осями сцены.
- * Подобрано по рендеру: после поворота мачта и манипулятор смотрят по −Z (вперёд сцены).
+/** The bundled Perseverance GLB faces +Z (front hazcams +Z, rear hazcams/RTG −Z).
+ * Rotate only the visual child to the scene's −Z forward; physics, mast and yaw stay unchanged.
  */
-const MODEL_YAW_FIX = Math.PI / 2;
+export const MODEL_YAW_FIX = Math.PI;
 
 export class RoverRig {
   /** Точка на грунте под центром ровера; курс в rotation.y (как у камеры прогулки). */
