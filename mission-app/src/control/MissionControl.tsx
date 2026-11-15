@@ -37,7 +37,7 @@ export default function MissionControl() {
     <div className="control">
       <header className="control__head">
         <a className="control__brand" href="#/home" title="Back to home">
-          ARES//NAV
+          HolySquare
         </a>
         <h1 className="control__title">Mission control</h1>
         <p className="control__strip">

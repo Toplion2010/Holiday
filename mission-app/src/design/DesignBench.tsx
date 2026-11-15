@@ -125,7 +125,7 @@ export default function DesignBench() {
     <main className="bench">
       <header className="bench__head">
         <div>
-          <h1 className="bench__title">ARES//NAV</h1>
+          <h1 className="bench__title">HolySquare</h1>
           <p className="bench__sub">Design bench: every control and display the app is built from, wired together.</p>
         </div>
         <div className="bench__head-controls">

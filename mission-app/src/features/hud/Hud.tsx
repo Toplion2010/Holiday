@@ -172,7 +172,7 @@ export function HudView({ state: s, ext, level, onToggle }: HudViewProps) {
         />
         {full && (
           <>
-            <Row label="Курс" value={`${Math.round(((s.headingDeg % 360) + 360) % 360)}°`} prov="data" tip="Направление взгляда, градусы от севера по часовой." />
+            <Row label="Курс" value={`${Math.round(((s.headingDeg % 360) + 360) % 360)}°`} prov="data" tip="Курс ровера (пешком — направление взгляда), градусы от севера по часовой." />
             <Row label="Пройдено" value={formatDistance(s.walkedM)} prov="data" tip="Длина фактического пути от старта, м, по точкам сцены." />
             <Row label="Данные" value={s.dataLevel} prov="data" tip="Уровень данных рельефа под ногами. Где подробного DTM нет, рельеф грубее и детали не выдумываются." />
           </>

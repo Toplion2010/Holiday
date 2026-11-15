@@ -584,7 +584,7 @@ export class WalkScene {
     const k = this.minimapScale * dpr;
     const mx = (this.px - this.minimapOrigin.x) * k;
     const my = (this.pz - this.minimapOrigin.z) * k;
-    this.camera.getWorldDirection(this.tmp);
+    this.headingDirection(this.tmp);
     const ang = Math.atan2(this.tmp.z, this.tmp.x);
     ctx.save();
     ctx.translate(mx, my);
@@ -1012,6 +1012,14 @@ export class WalkScene {
     }
   }
 
+  /** Vehicle heading is independent of mouse look. Walking still follows the camera. */
+  get vehicleYaw(): number { return this.roverYaw; }
+
+  private headingDirection(target: THREE.Vector3): THREE.Vector3 {
+    if (this.vehicle === 'rover') return target.set(-Math.sin(this.roverYaw), 0, -Math.cos(this.roverYaw));
+    return this.camera.getWorldDirection(target);
+  }
+
   private groundAt = (x: number, z: number): number => this.sampler.heightAt(x, z) - this.refY;
 
   private updateCameraHeight(): void {
@@ -1071,7 +1079,7 @@ export class WalkScene {
     this.stateTimer = 0.2;
     const { pkg } = this.opts;
     const ll = localToLonLat(pkg.frame, this.px, this.pz);
-    this.camera.getWorldDirection(this.tmp);
+    this.headingDirection(this.tmp);
     const hx = this.tmp.x;
     const hz = this.tmp.z;
     const hl = Math.hypot(hx, hz) || 1;

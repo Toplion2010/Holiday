@@ -64,7 +64,7 @@ export function GameHud({
     const blob = new Blob([JSON.stringify({ outcome: snap.outcome, config: c, route: snap.route, log: s.log }, null, 2)], { type: 'application/json' })
     const a = document.createElement('a')
     a.href = URL.createObjectURL(blob)
-    a.download = 'ares-eva-log.json'
+    a.download = 'holysquare-eva-log.json'
     a.click()
     URL.revokeObjectURL(a.href)
   }

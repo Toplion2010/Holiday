@@ -33,7 +33,7 @@ export default function Console() {
     <div className="console">
       <header className="console__head">
         <a className="console__brand" href="#/home" title="Back to home">
-          ARES//NAV
+          HolySquare
         </a>
         <dl className="status-strip">
           <div>

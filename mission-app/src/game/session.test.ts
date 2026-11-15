@@ -32,7 +32,7 @@ const info = (x: number, z: number, simDt: number, vehicle: 'walk' | 'rover' = '
   vehicle, speedMs: 0.7, locked: true,
 })
 
-const fakeScene = () => ({ setInputEnabled: vi.fn(), setVehicle: vi.fn(), setTau: vi.fn(), setJoystick: vi.fn(), teleport: vi.fn() }) as unknown as WalkScene
+const fakeScene = () => ({ vehicleYaw: 0, setInputEnabled: vi.fn(), setVehicle: vi.fn(), setTau: vi.fn(), setJoystick: vi.fn(), teleport: vi.fn() }) as unknown as WalkScene
 
 function session() {
   const t = target()
@@ -125,6 +125,32 @@ describe('ARES game session', () => {
     s.beforeRender(info(0, 0, 0.1))
     expect(s.state.log.some((l) => l.text === 'Autopilot arrived at HAB-1')).toBe(true)
   })
+
+  for (const yaw of [0, Math.PI / 2, Math.PI, -Math.PI / 2]) {
+    it(`autopilot returns a stationary rover from yaw ${yaw} with independent camera look`, () => {
+      const { s } = session()
+      let heading = yaw
+      let x = 0, z = -30
+      const scene = fakeScene()
+      Object.defineProperty(scene, 'vehicleYaw', { get: () => heading })
+      s.attach(scene)
+      s.beforeRender(info(0, 0, 0, 'rover'))
+      s.beforeRender(info(x, z, 0, 'rover'))
+      s.engageAutopilot('manual')
+      for (let i = 0; i < 800 && !s.state.log.some(l => l.text === 'Autopilot arrived at HAB-1'); i++) {
+        const frame = info(x, z, 0.1, 'rover')
+        frame.camera.rotation.y = 1.2 // looking elsewhere must not steer the rover
+        s.beforeRender(frame)
+        const [turn, forward] = vi.mocked(scene.setJoystick).mock.calls.at(-1)!
+        heading -= turn * 0.6 * frame.dt
+        x -= Math.sin(heading) * forward * frame.dt
+        z -= Math.cos(heading) * forward * frame.dt
+      }
+      expect(Math.hypot(x, z)).toBeLessThan(2.5)
+      expect(s.state.log.some(l => l.text === 'Autopilot arrived at HAB-1')).toBe(true)
+      expect(scene.teleport).not.toHaveBeenCalled()
+    })
+  }
 
   it('returning to the habitat with science wins', () => {
     const { s } = session()

@@ -1,4 +1,4 @@
-# ARES Expedition
+# HolySquare
 
 Mars EVA game on real HiRISE terrain of the Gale crater boxwork area, Mount Sharp. The 3D scene, HUD, sky and time model are the Martian Map walk mode (copied from `nasa-hackathon-main/frontend/src/features/{walk,sky,hud}` and `src/shared/{eva,time}`); resources, science scoring and faults are the ARES Expedition engine (`src/expedition/`); the astronaut is `mars-exploration-3d/mars_astronaut_animated.glb`.
 
@@ -6,15 +6,15 @@ Mars EVA game on real HiRISE terrain of the Gale crater boxwork area, Mount Shar
 
 | Route | Screen |
 |---|---|
-| `#/` | ARES//NAV boot checks, any key → home |
+| `#/` | HolySquare boot checks, any key → home |
 | `#/home` | Home: **Start simulation** (S or 1 → `#/game`) and **Mission control** (M or 2 → `#/control`) |
 | `#/control` | Mission Control: base, crew, site, conditions, today's expeditions (from `src/data/base.json`) |
 | `#/mission` → `#/console` | EVA setup and planning console |
 | `#/credits` | Data sources |
 | `#/game` | HAB-1 base screen (3D astronaut and rover, loadout, stops in order) → Mars EVA game (below) |
-| `#/planner` | Original ARES Expedition planner |
+| `#/planner` | HolySquare expedition planner |
 
-ARES//NAV screens and the game use different global stylesheets with the same CSS variable names, so `src/main.tsx` loads one group per page and reloads when you move between groups.
+HolySquare screens and the game use different global stylesheets with the same CSS variable names, so `src/main.tsx` loads one group per page and reloads when you move between groups.
 
 ### Editing Mission Control data
 
@@ -54,7 +54,7 @@ The original planner console is at `#/planner`.
 
 ### What changed in the copied Martian Map code
 
-- `features/walk/walkScene.ts`: optional `hooks` (`beforeRender` / `afterRender`) and `setInputEnabled()`; nothing else.
+- `features/walk/walkScene.ts`: optional `hooks` (`beforeRender` / `afterRender`) and `setInputEnabled()`; rover heading also drives the compass/minimap independently of mouse look.
 - `features/walk/WalkPanel.tsx`: optional `game` prop that passes the hooks to the scene and draws game panels over it.
 - Config: `@` → `src` alias in `vite.config.ts` / `tsconfig.app.json`; `erasableSyntaxOnly` off (the copied code uses parameter properties).
 - Site packages copied to `public/data/local/` (Gale is the game site; Ares 3 and Jezero are there for the copied tests only and are not listed in `index.json`).
@@ -72,7 +72,7 @@ cd ../deploy && vercel deploy --prod --project seymur-holiday
 
 Keep the `vercel.json` with the `/` → `/holiday/` redirect in the deploy folder.
 
-## Planner (original ARES Expedition)
+## HolySquare planner
 
 
 Local Mars expedition prototype, adapted from ARES//NAV and Martian Map with user-cleared reuse. Original applications remain in sibling folders.
@@ -126,3 +126,15 @@ Production build and 38 automated tests passed. Tests include blocked corners, m
 This remains a research prototype. Return geometry is refreshed periodically (60 simulated seconds) and after faults; HUD labels the last evaluation age. Terrain shadows and solar charging are not modeled. Native terrain source resolution varies. No live local weather or spatial radiation map is claimed. Surface station registration is uncertain. Speech depends on browser support and may require network service; text commands remain local. Camera gesture recognition requires explicit user permission and hardware testing. Offline caching is implemented but a fully disconnected browser walkthrough remains to be performed. Replay reconstructs recorded plans/actions; it does not independently regenerate plans against changed datasets.
 
 Browser walkthrough verified: calculate alternatives → approve fastest → assisted traversal at 300× → complete activity → return to base. Final elapsed time 33:03; oxygen 1.425 kg and suit energy 1512 Wh remained. Full offline, rover emergency, camera/microphone and cross-device browser walkthroughs still require verification before this is a completed submission.
+
+## HolySquare branding and rover correction
+
+The runnable implementation is `mission-app`. The sibling `mars-exploration-3d` contains Blender/GLB assets and generation scripts, not driving input logic. The active rover uses `public/models/perseverance.glb`, not that sibling's animated rover.
+
+The bundled Perseverance model faces +Z: its front hazcams are at positive Z and rear hazcams/RTG at negative Z. The former +90° visual rotation made its nose face +X while the vehicle drove along −Z. `roverRig.ts` now rotates the visual child by 180° before sizing/grounding; the chassis, terrain pitch/roll and mast retain their existing −Z convention. No movement or camera offset compensations are applied.
+
+W/S and up/down drive forward/reverse along chassis yaw; A/D and left/right turn in place. Turning carries the camera with the chassis while preserving independent mouse look. Compass, minimap arrow and exported rover heading follow the chassis. Walking still follows the camera. Autopilot uses actual chassis yaw instead of estimating heading from the last displacement, so it can turn while stopped and after reversing.
+
+Branding changed in boot/home/control/console/design screens, planner header/loading/export, base link, EVA export, browser title and package metadata. Original ARES source credits, licenses, mission callsigns and internal storage/debug identifiers remain intact.
+
+Validation: production build passed; 160 tests passed, including GLB axis evidence, production drive/reverse/turn and camera-offset checks at five headings, and autopilot return from four starting headings without teleporting. Browser checks confirmed HolySquare boot/home/title, rover forward/reverse at 204° and 255°, left turn to 152°, and autopilot return from 10 m to the habitat arrival radius. The model nose now follows its longitudinal travel direction. The embedded browser did not acquire pointer lock, so physical mouse-look interaction remains unverified (camera-offset preservation is covered by tests). Full lint still reports two pre-existing rules-of-hooks errors in unchanged bundled MediaPipe JS; source-only lint has warnings but no errors. Build retains existing chunk-size and mixed-import warnings.

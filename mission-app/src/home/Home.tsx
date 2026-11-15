@@ -21,8 +21,8 @@ export default function Home({ onStart, onControl }: { onStart: () => void; onCo
 
   return (
     <main className="home">
-      <CrtScreen label="ARES//NAV home" className="home__screen">
-        <h1 className="home__title">ARES//NAV</h1>
+      <CrtScreen label="HolySquare home" className="home__screen">
+        <h1 className="home__title">HolySquare</h1>
         <p className="home__sub">Interplanetary survival guide · Martian map</p>
 
         <nav className="home__actions" aria-label="Main menu">
